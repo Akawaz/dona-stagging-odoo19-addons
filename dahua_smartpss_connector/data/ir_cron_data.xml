@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_dahua_smartpss_sync" model="ir.cron">
+        <field name="name">Dahua SmartPSS: Sync Attendance Devices</field>
+        <field name="model_id" ref="model_dahua_device"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_all_devices()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

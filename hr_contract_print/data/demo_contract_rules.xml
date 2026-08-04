@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <!-- Bahraini Contract Rules -->
+    <record id="rule_job_description" model="hr.contract.rule">
+      <field name="name">Job Description</field>
+      <field name="sequence" eval="1"/>
+      <field name="title">1. Job Description</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>The Branch Manager is responsible for overseeing the daily operations of the restaurant branch, supervising staff, ensuring high standards of customer service, managing schedules and inventory, maintaining compliance with company policies and health regulations, and achieving operational and financial targets.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_working_hours" model="hr.contract.rule">
+      <field name="name">Working Hours</field>
+      <field name="sequence" eval="2"/>
+      <field name="title">2. Working Hours</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>• 9 hours (including one-hour break), 6 days per week.<br/>
+        • One day off weekly (day off determined by business needs).</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_salary" model="hr.contract.rule">
+      <field name="name">Salary</field>
+      <field name="sequence" eval="3"/>
+      <field name="title">3. Salary</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>Salary details are shown in the salary breakdown table below.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_probation" model="hr.contract.rule">
+      <field name="name">Probation</field>
+      <field name="sequence" eval="4"/>
+      <field name="title">4. Probation</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>• 3-month probation period.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_benefits" model="hr.contract.rule">
+      <field name="name">Benefits</field>
+      <field name="sequence" eval="5"/>
+      <field name="title">5. Benefits</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>As per Bahraini Labour Law unless otherwise agreed in writing.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_conduct_confidentiality" model="hr.contract.rule">
+      <field name="name">Conduct &amp; Confidentiality</field>
+      <field name="sequence" eval="6"/>
+      <field name="title">6. Conduct &amp; Confidentiality</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>The Employee shall:</p>
+        <p>• Maintain high professional conduct.<br/>
+        • Protect all business information.<br/>
+        • Not share or copy any brand materials (recipes, menus, designs, etc.).<br/>
+        • Not engage with competitors during employment.<br/>
+        • Not defame or harm the Company's interests in any form.</p>
+        <p>All work products and information remain the exclusive property of Dona's Wonders W.L.L.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_intellectual_property" model="hr.contract.rule">
+      <field name="name">Intellectual Property</field>
+      <field name="sequence" eval="7"/>
+      <field name="title">7. Intellectual Property</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>All intellectual property, business information, and work products created or obtained during employment belong exclusively to the Company and are confidential.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_company_equipment" model="hr.contract.rule">
+      <field name="name">Company Equipment &amp; Files</field>
+      <field name="sequence" eval="8"/>
+      <field name="title">8. Company Equipment &amp; Files</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>• All devices, files, assets, passwords, and company data must be returned immediately upon termination.<br/>
+        • Company systems and software are for authorized business use only.<br/>
+        • Failure to return company property or unauthorized deletion may result in disciplinary/legal action.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_leave" model="hr.contract.rule">
+      <field name="name">Leave</field>
+      <field name="sequence" eval="9"/>
+      <field name="title">9. Leave</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>Annual leave, sick leave, and statutory entitlements are provided in accordance with Bahraini Labour Law unless otherwise agreed in writing.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_governing_law" model="hr.contract.rule">
+      <field name="name">Governing Law</field>
+      <field name="sequence" eval="10"/>
+      <field name="title">10. Governing Law</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>This Agreement is governed by the laws of the Kingdom of Bahrain.</p>
+        ]]>
+      </field>
+    </record>
+
+    <record id="rule_entire_agreement" model="hr.contract.rule">
+      <field name="name">Entire Agreement</field>
+      <field name="sequence" eval="11"/>
+      <field name="title">11. Entire Agreement</field>
+      <field name="nationality_type">bahraini</field>
+      <field name="description">
+        <![CDATA[
+        <p>This Agreement represents the entire understanding between the Employer and Employee, superseding any prior agreements. Amendments must be in writing and signed by both parties.</p>
+        ]]>
+      </field>
+    </record>
+
+    <!-- Bahraini Contract Template -->
+    <record id="template_bahraini" model="hr.contract.template">
+      <field name="name">Bahraini Employment Contract</field>
+      <field name="sequence" eval="1"/>
+      <field name="nationality_type">bahraini</field>
+      <field name="rule_ids" eval="[
+        ref('rule_job_description'),
+        ref('rule_working_hours'),
+        ref('rule_salary'),
+        ref('rule_probation'),
+        ref('rule_benefits'),
+        ref('rule_conduct_confidentiality'),
+        ref('rule_intellectual_property'),
+        ref('rule_company_equipment'),
+        ref('rule_leave'),
+        ref('rule_governing_law'),
+        ref('rule_entire_agreement'),
+      ]"/>
+    </record>
+  </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_inherit_expiry_scheduler" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.expiry.scheduler</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Database Expiry Scheduler" string="Database Expiry Scheduler" name="database_expiry_scheduler">
+                    <block title="Expiry Scheduler Configuration" name="expiry_scheduler_config">
+                        <setting string="Auto Extend" help="Automatically extend the database expiry date when it is near.">
+                            <field name="db_expiry_auto_extend"/>
+                        </setting>
+                        <setting string="Expiry Parameter Key" help="The system parameter key that stores the expiry date.">
+                            <field name="db_expiry_parameter_key"/>
+                        </setting>
+                        <setting string="Threshold (Days)" help="Days before expiry to trigger auto-extension.">
+                            <field name="db_expiry_threshold_days"/>
+                        </setting>
+                        <setting string="Extend By (Years)" help="Number of years to add on each extension.">
+                            <field name="db_expiry_extend_years"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

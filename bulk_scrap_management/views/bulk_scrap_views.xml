@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Sequence -->
+    <record id="seq_bulk_scrap" model="ir.sequence">
+        <field name="name">Bulk Scrap</field>
+        <field name="code">bulk.scrap</field>
+        <field name="prefix">BSCR/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_bulk_scrap_tree" model="ir.ui.view">
+        <field name="name">bulk.scrap.tree</field>
+        <field name="model">bulk.scrap</field>
+        <field name="arch" type="xml">
+            <list string="Bulk Scrap" decoration-info="state == 'draft'" decoration-success="state == 'validated'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="date"/>
+                <field name="location_id"/>
+                <field name="scrap_location_id"/>
+                <field name="total_cost" optional="show"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'to_review'" decoration-success="state == 'validated'" decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_bulk_scrap_search" model="ir.ui.view">
+        <field name="name">bulk.scrap.search</field>
+        <field name="model">bulk.scrap</field>
+        <field name="arch" type="xml">
+            <search string="Bulk Scrap">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="source_document"/>
+                <field name="location_id"/>
+                <field name="scrap_location_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="To Review" name="to_review" domain="[('state', '=', 'to_review')]"/>
+                <filter string="Validated" name="validated" domain="[('state', '=', 'validated')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <group>
+                    <filter string="Created By" name="user" domain="[]" context="{'group_by':'user_id'}"/>
+                    <filter string="Source Location" name="location" domain="[]" context="{'group_by':'location_id'}"/>
+                    <filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Date" name="date" domain="[]" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_bulk_scrap_form" model="ir.ui.view">
+        <field name="name">bulk.scrap.form</field>
+        <field name="model">bulk.scrap</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Scrap">
+                <header>
+                    <button name="action_submit_for_review" string="Submit for Review" type="object" class="oe_highlight"
+                            invisible="state != 'draft'" data-hotkey="s"/>
+                    <button name="action_validate" string="Validate" type="object" class="oe_highlight"
+                            invisible="state != 'to_review'" data-hotkey="v"
+                            groups="stock.group_stock_manager"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state in ('validated', 'cancelled')" data-hotkey="z"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            invisible="state not in ('cancelled', 'to_review')" data-hotkey="r"/>
+                    <button name="action_print_report" string="Print Report" type="object"
+                            invisible="state != 'validated'" data-hotkey="p"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_review,validated,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" readonly="state == 'validated'"/>
+                            <field name="date" readonly="state == 'validated'"/>
+                            <field name="company_id" readonly="state == 'validated'" groups="base.group_multi_company"/>
+                            <field name="source_document" readonly="state == 'validated'"/>
+                        </group>
+                        <group>
+                            <field name="location_id" readonly="state == 'validated'"/>
+                            <field name="scrap_location_id" readonly="state == 'validated'"/>
+                            <field name="total_cost"/>
+                            <field name="reviewer_id" invisible="not reviewer_id"/>
+                            <field name="validated_date" invisible="not validated_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="line_ids" readonly="state == 'validated'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="on_hand_qty"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom_id" groups="uom.group_uom"/>
+                                    <field name="reason"/>
+                                    <field name="replenish_qty"/>
+                                    <field name="cost" optional="show"/>
+                                    <field name="scrap_id" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes &amp; Attachments">
+                            <group>
+                                <field name="notes" readonly="state == 'validated'"/>
+                            </group>
+                            <group string="Attachments">
+                                <field name="attachment_ids" widget="many2many_binary" nolabel="1" readonly="state == 'validated'"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+<!--                <div class="oe_chatter">-->
+<!--                    <field name="message_follower_ids" groups="base.group_user"/>-->
+<!--                    <field name="activity_ids"/>-->
+<!--                    <field name="message_ids"/>-->
+<!--                </div>-->
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_bulk_scrap" model="ir.actions.act_window">
+        <field name="name">Bulk Scrap</field>
+        <field name="res_model">bulk.scrap</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_bulk_scrap_search"/>
+    </record>
+
+</odoo>

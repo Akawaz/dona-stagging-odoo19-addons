@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_contract_print" model="ir.ui.view">
+        <field name="name">hr.employee.form.contract.print</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_print_contract"
+                    type="object"
+                    string="Print Contract"
+                    class="btn-primary"
+                    icon="fa-print"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Contract">
+                    <group>
+                        <group>
+                            <field name="contract_type"/>
+                            <field name="contract_start_date"/>
+                            <field name="probation_period"/>
+                        </group>
+                        <group>
+                            <field name="working_hours"/>
+                            <field name="weekly_off"/>
+                        </group>
+                    </group>
+                    <group string="Salary Details">
+                        <group>
+                            <field name="contract_basic"/>
+                            <field name="contract_housing"/>
+                        </group>
+                        <group>
+                            <field name="contract_food"/>
+                            <field name="contract_transport"/>
+                        </group>
+                        <group>
+                            <field name="contract_salary" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

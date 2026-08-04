@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="rule_purchase_request_company" model="ir.rule">
+        <field name="name">Purchase Request: Company Rule</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_purchase_request_line_company" model="ir.rule">
+        <field name="name">Purchase Request Line: Company Rule</field>
+        <field name="model_id" ref="model_purchase_request_line"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_purchase_request_user" model="ir.rule">
+        <field name="name">Purchase Request: User can see own requests</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_user'))]"/>
+        <field name="domain_force">['|', ('request_user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+    </record>
+
+    <record id="rule_purchase_request_approver" model="ir.rule">
+        <field name="name">Purchase Request: Approver can see all requests</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_approver'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_purchase_request_admin" model="ir.rule">
+        <field name="name">Purchase Request: Admin can see all requests</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_purchase_request_line_user" model="ir.rule">
+        <field name="name">Purchase Request Line: User can see own lines</field>
+        <field name="model_id" ref="model_purchase_request_line"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_user'))]"/>
+        <field name="domain_force">['|', ('request_id.request_user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+    </record>
+
+    <record id="rule_purchase_request_line_approver" model="ir.rule">
+        <field name="name">Purchase Request Line: Approver can see all lines</field>
+        <field name="model_id" ref="model_purchase_request_line"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_approver'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_purchase_request_line_admin" model="ir.rule">
+        <field name="name">Purchase Request Line: Admin can see all lines</field>
+        <field name="model_id" ref="model_purchase_request_line"/>
+        <field name="groups" eval="[(4, ref('group_purchase_request_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

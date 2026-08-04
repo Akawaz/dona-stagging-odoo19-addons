@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_bahraini_contract" model="ir.actions.report">
+        <field name="name">Bahraini Employment Contract</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract_print.report_bahraini_contract_document</field>
+        <field name="report_file">hr_contract_print.report_bahraini_contract_document</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_non_bahraini_contract" model="ir.actions.report">
+        <field name="name">Non Bahraini Employment Contract</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract_print.report_non_bahraini_contract_document</field>
+        <field name="report_file">hr_contract_print.report_non_bahraini_contract_document</field>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

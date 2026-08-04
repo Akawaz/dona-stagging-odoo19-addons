@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_db_backup" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.db.backup</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Database Backup" string="Database Backup"
+                     name="db_backup_cloud" groups="base.group_system">
+
+                    <block title="General" name="dbk_general_block">
+                        <setting string="Run now" help="Create a full backup (database + filestore) to all enabled destinations immediately.">
+                            <button name="action_db_backup_now" type="object"
+                                    string="Backup Now" class="btn-primary"/>
+                        </setting>
+                        <setting title="Run the backup automatically on a daily schedule."
+                                 help="Automatic scheduled backup (daily)">
+                            <field name="dbk_schedule_enabled"/>
+                        </setting>
+                    </block>
+
+                    <block title="Local Folder" name="dbk_local_block">
+                        <setting help="Keep a copy of each backup in a folder on the server.">
+                            <field name="dbk_local_enabled"/>
+                            <div class="content-group" invisible="not dbk_local_enabled">
+                                <div class="mt16 row">
+                                    <label for="dbk_local_path" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_local_path" placeholder="/var/lib/odoo/backups"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_local_keep" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_local_keep"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="AWS S3" name="dbk_s3_block">
+                        <setting help="Upload each backup to an AWS S3 (or S3-compatible) bucket.">
+                            <field name="dbk_s3_enabled"/>
+                            <div class="content-group" invisible="not dbk_s3_enabled">
+                                <div class="mt16 row">
+                                    <label for="dbk_s3_bucket" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_bucket"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_s3_region" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_region" placeholder="ap-south-1"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_s3_access_key" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_access_key"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_s3_secret_key" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_secret_key" password="True"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_s3_prefix" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_prefix" placeholder="odoo-backups"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_s3_endpoint" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_s3_endpoint" placeholder="(AWS default)"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="Google Drive" name="dbk_gdrive_block">
+                        <setting help="Upload each backup to Google Drive using a service account.">
+                            <field name="dbk_gdrive_enabled"/>
+                            <div class="content-group" invisible="not dbk_gdrive_enabled">
+                                <div class="mt16 row">
+                                    <label for="dbk_gdrive_folder_id" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_gdrive_folder_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_gdrive_service_account_json" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_gdrive_service_account_json"
+                                           placeholder='{"type": "service_account", ...}'/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="OneDrive" name="dbk_onedrive_block">
+                        <setting help="Upload each backup to Microsoft OneDrive via Graph (app-only).">
+                            <field name="dbk_onedrive_enabled"/>
+                            <div class="content-group" invisible="not dbk_onedrive_enabled">
+                                <div class="mt16 row">
+                                    <label for="dbk_onedrive_tenant_id" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_onedrive_tenant_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_onedrive_client_id" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_onedrive_client_id"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_onedrive_client_secret" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_onedrive_client_secret" password="True"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_onedrive_drive" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_onedrive_drive" placeholder="users/backup@yourtenant.com"/>
+                                </div>
+                                <div class="row">
+                                    <label for="dbk_onedrive_folder" class="col-lg-4 o_light_label"/>
+                                    <field name="dbk_onedrive_folder" placeholder="Backups/Odoo"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

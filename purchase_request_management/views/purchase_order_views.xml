@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_order_form_inherit_purchase_request" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.purchase.request</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_view_purchase_requests" class="oe_stat_button" icon="fa-file-text-o" invisible="purchase_request_count == 0">
+                    <field name="purchase_request_count" widget="statinfo" string="Requests"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

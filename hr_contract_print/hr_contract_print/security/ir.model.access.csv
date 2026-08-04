@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_contract_template_user,hr.contract.template.user,model_hr_contract_template,hr.group_hr_user,1,1,1,1
+access_hr_contract_template_manager,hr.contract.template.manager,model_hr_contract_template,hr.group_hr_manager,1,1,1,1
+access_hr_contract_rule_user,hr.contract.rule.user,model_hr_contract_rule,hr.group_hr_user,1,1,1,1
+access_hr_contract_rule_manager,hr.contract.rule.manager,model_hr_contract_rule,hr.group_hr_manager,1,1,1,1
+access_hr_employee_salary_line_user,hr.employee.salary.line.user,model_hr_employee_salary_line,hr.group_hr_user,1,1,1,1
+access_hr_employee_salary_line_manager,hr.employee.salary.line.manager,model_hr_employee_salary_line,hr.group_hr_manager,1,1,1,1

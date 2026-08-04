@@ -1,0 +1,137 @@
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#1d4ed8;">&#x2601;&#xFE0F; Database Backup &mdash; Local + Cloud</h2>
+        <h3 class="oe_slogan" style="color:#3b82f6;">Automatic, scheduled Odoo backups &mdash; never lose your data</h3>
+        <div class="oe_span12">
+            <p class="oe_mt32 text-center" style="font-size: 1.25em; max-width: 900px; margin: 0 auto;">
+                Take <strong>full backups</strong> of your Odoo database <strong>and filestore</strong>
+                (standard Odoo <code>.zip</code>) and store them on a local folder, AWS S3, Google Drive
+                and OneDrive &mdash; automatically on a schedule, or with one click. All configured from
+                <strong>Settings</strong>.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Highlights ══ -->
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <h4>&#x1F4BE; Full backup (DB + filestore)</h4>
+            <p>Standard Odoo <code>.zip</code> &mdash; restorable from Odoo's own database manager.</p>
+        </div>
+        <div class="oe_span6">
+            <h4>&#x23F0; Scheduled &amp; one-click</h4>
+            <p>Automatic daily backup via cron, plus a <strong>Backup Now</strong> button.</p>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+            <h4>&#x2601;&#xFE0F; Multi-destination</h4>
+            <p>Local folder, AWS S3 (or S3-compatible), Google Drive and OneDrive &mdash; together.</p>
+        </div>
+        <div class="oe_span6">
+            <h4>&#x1F9FE; History &amp; retention</h4>
+            <p>Every run logged with status, size &amp; destinations; keep the last <em>N</em> local copies.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Screenshot: Settings ══ -->
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Configure everything from Settings</h3>
+        <div class="oe_span12">
+            <p class="oe_mt32 text-center">
+                Enable each destination independently and fill in its credentials &mdash; no code, no XML.
+                Toggle the daily scheduled backup, or run one immediately.
+            </p>
+        </div>
+        <div class="oe_span12 text-center">
+            <img src="screenshots/01-settings.png" class="img img-responsive shadow"
+                 style="margin:16px auto; border:1px solid #ddd; border-radius:6px; max-width:100%;"
+                 alt="Database Backup settings"/>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Screenshot: History ══ -->
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">A clear backup history</h3>
+        <div class="oe_span12">
+            <p class="oe_mt32 text-center">
+                Every backup is logged with its date, size, whether it was scheduled, and a status &mdash;
+                so you always know your data is safe. One failing destination never blocks the others.
+            </p>
+        </div>
+        <div class="oe_span12 text-center">
+            <img src="screenshots/02-backup-history.png" class="img img-responsive shadow"
+                 style="margin:16px auto; border:1px solid #ddd; border-radius:6px; max-width:100%;"
+                 alt="Backup history"/>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Screenshot: Detail ══ -->
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Know exactly where every backup went</h3>
+        <div class="oe_span12 text-center">
+            <img src="screenshots/03-backup-detail.png" class="img img-responsive shadow"
+                 style="margin:16px auto; border:1px solid #ddd; border-radius:6px; max-width:90%;"
+                 alt="Backup record detail with destinations"/>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Providers ══ -->
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Supported destinations</h3>
+        <div class="oe_span6">
+            <ul style="font-size: 1.05em;">
+                <li>&#x1F5C2;&#xFE0F; <strong>Local folder</strong> &mdash; server path + retention (keep last <em>N</em>)</li>
+                <li>&#x2601;&#xFE0F; <strong>AWS S3</strong> &mdash; or any S3-compatible bucket (MinIO, Wasabi, Spaces&hellip;)</li>
+            </ul>
+        </div>
+        <div class="oe_span6">
+            <ul style="font-size: 1.05em;">
+                <li>&#x1F4C1; <strong>Google Drive</strong> &mdash; via a service account</li>
+                <li>&#x1FA9F; <strong>Microsoft OneDrive</strong> &mdash; via Microsoft Graph (app-only)</li>
+            </ul>
+        </div>
+        <div class="oe_span12 text-center">
+            <p class="text-muted" style="margin-top:12px;">
+                Optional Python packages per destination: <code>boto3</code> (S3),
+                <code>google-api-python-client</code> + <code>google-auth</code> (Drive).
+                OneDrive uses only <code>requests</code> (bundled with Odoo).
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Technical ══ -->
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Technical specifications</h3>
+        <div class="oe_span12 text-center">
+            <p><strong>Odoo Version:</strong> 19.0 &nbsp;|&nbsp; <strong>License:</strong> OPL-1 &nbsp;|&nbsp; <strong>Depends on:</strong> base</p>
+            <p><strong>Requirement:</strong> <code>pg_dump</code> available on the Odoo server (same major version as PostgreSQL).</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ Support ══ -->
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Support &amp; Contact</h3>
+        <div class="oe_span12 text-center">
+            <p>
+                <strong>Author:</strong> Arun A George<br/>
+                <strong>Website:</strong> <a href="https://arunalexgeorge.online">arunalexgeorge.online</a><br/>
+                <strong>Email:</strong> admin@arunalexgeorge.online
+            </p>
+        </div>
+    </div>
+</section>

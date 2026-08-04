@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="seq_kitchen_prepare_list" model="ir.sequence">
+        <field name="name">Kitchen Preparation List</field>
+        <field name="code">kitchen.prepare.list</field>
+        <field name="prefix">KPL</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+</odoo>

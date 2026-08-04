@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_request_line_make_purchase_order_item_tree" model="ir.ui.view">
+        <field name="name">purchase.request.line.make.purchase.order.item.tree</field>
+        <field name="model">purchase.request.line.make.purchase.order.item</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" create="false" delete="false">
+                <field name="product_id" readonly="True"/>
+                <field name="description" readonly="True"/>
+                <field name="product_qty"/>
+                <field name="product_uom_id" readonly="True" options="{'no_create': True}"/>
+                <field name="vendor_id" readonly="True" options="{'no_create': True}"/>
+                <field name="line_id" invisible="1"/>
+                <field name="wizard_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_line_make_purchase_order" model="ir.ui.view">
+        <field name="name">purchase.request.line.make.purchase.order.form</field>
+        <field name="model">purchase.request.line.make.purchase.order</field>
+        <field name="arch" type="xml">
+            <form string="Create RFQ">
+                <field name="request_id" invisible="1"/>
+                <group>
+                    <group>
+                        <field name="supplier_id" readonly="1" options="{'no_create': True}"/>
+                        <field name="purchase_order_id" options="{'no_create': True}" domain="[('partner_id', '=', supplier_id), ('state', '=', 'draft')]"/>
+                    </group>
+                    <group>
+                        <field name="existing_po_count" readonly="1"/>
+                    </group>
+                </group>
+                <div class="alert alert-warning" role="alert" invisible="not new_rfq_warning">
+                    <field name="new_rfq_warning" readonly="1"/>
+                    <div class="mt-2">
+                        <field name="force_new_rfq"/>
+                    </div>
+                </div>
+                <field name="existing_po_ids" readonly="1" invisible="existing_po_count == 0">
+                    <list create="false" delete="false">
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="date_order"/>
+                        <field name="state"/>
+                    </list>
+                </field>
+                <field name="item_ids" context="{'tree_view_ref': 'purchase_request_management.view_purchase_request_line_make_purchase_order_item_tree'}"/>
+                <footer>
+                    <button name="make_purchase_order" string="Create RFQ" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

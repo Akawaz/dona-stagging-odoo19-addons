@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_report_kitchen_prepare_list" model="ir.actions.report">
+        <field name="name">Kitchen Preparation List</field>
+        <field name="model">kitchen.prepare.list</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mrp_prepare_list.report_kitchen_prepare_list</field>
+        <field name="report_file">mrp_prepare_list.report_kitchen_prepare_list</field>
+        <field name="print_report_name">'Kitchen Preparation - %s' % (object.name)</field>
+    </record>
+
+</odoo>

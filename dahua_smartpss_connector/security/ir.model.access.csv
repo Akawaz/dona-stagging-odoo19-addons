@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dahua_device_manager,dahua.device.manager,model_dahua_device,hr_attendance.group_hr_attendance_manager,1,1,1,1
+access_dahua_device_user,dahua.device.user,model_dahua_device,base.group_user,1,0,0,0
+access_dahua_record_manager,dahua.attendance.record.manager,model_dahua_attendance_record,hr_attendance.group_hr_attendance_manager,1,1,1,1
+access_dahua_record_user,dahua.attendance.record.user,model_dahua_attendance_record,base.group_user,1,0,0,0
+access_dahua_sync_log_manager,dahua.sync.log.manager,model_dahua_sync_log,hr_attendance.group_hr_attendance_manager,1,1,1,1
+access_dahua_sync_log_user,dahua.sync.log.user,model_dahua_sync_log,base.group_user,1,0,0,0
+access_dahua_enroll_wizard_manager,dahua.enroll.wizard.manager,model_dahua_enroll_wizard,hr_attendance.group_hr_attendance_manager,1,1,1,1
+access_dahua_sync_wizard_manager,dahua.sync.wizard.manager,model_dahua_sync_wizard,hr_attendance.group_hr_attendance_manager,1,1,1,1

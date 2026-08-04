@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_employee_form_inherit_allowances" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.allowances</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert the allowance fields right after the Wage row on the
+                 Payroll tab (Contract Overview group). -->
+            <xpath expr="//div[@name='wage']" position="after">
+                <label for="transportation_allowance"/>
+                <div class="o_row" name="transportation_allowance">
+                    <field name="transportation_allowance"
+                           class="oe_inline o_hr_narrow_field" nolabel="1"/>
+                </div>
+                <label for="housing_allowance"/>
+                <div class="o_row" name="housing_allowance">
+                    <field name="housing_allowance"
+                           class="oe_inline o_hr_narrow_field" nolabel="1"/>
+                </div>
+                <label for="other_allowance"/>
+                <div class="o_row" name="other_allowance">
+                    <field name="other_allowance"
+                           class="oe_inline o_hr_narrow_field" nolabel="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

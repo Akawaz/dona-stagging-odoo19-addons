@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_contract_form" model="ir.ui.view">
+        <field name="name">res.config.settings.contract.print</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Employee Contract Printing" name="employee_contract_print">
+                    <block title="Contract Configuration">
+                        <setting string="Contract Header">
+                            <field name="contract_header" widget="image"/>
+                        </setting>
+                        <setting string="Contract Footer">
+                            <field name="contract_footer" widget="image"/>
+                        </setting>
+                        <setting string="Company Representative">
+                            <field name="company_representative"/>
+                        </setting>
+                        <setting string="Company CR">
+                            <field name="company_cr"/>
+                        </setting>
+                        <setting string="Company Address">
+                            <field name="company_address"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_dahua_smartpss_root"
+              name="Dahua Connector"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="101"/>
+
+    <menuitem id="menu_dahua_smartpss_device"
+              name="Devices"
+              parent="menu_dahua_smartpss_root"
+              action="action_dahua_device"
+              sequence="10"/>
+
+    <menuitem id="menu_dahua_smartpss_enroll"
+              name="Enroll Employees"
+              parent="menu_dahua_smartpss_root"
+              action="action_dahua_enroll_wizard"
+              sequence="15"/>
+
+    <menuitem id="menu_dahua_smartpss_record"
+              name="Fetched Records"
+              parent="menu_dahua_smartpss_root"
+              action="action_dahua_record"
+              sequence="20"/>
+
+    <menuitem id="menu_dahua_smartpss_sync_log"
+              name="Sync Logs"
+              parent="menu_dahua_smartpss_root"
+              action="action_dahua_sync_log"
+              sequence="30"/>
+
+</odoo>

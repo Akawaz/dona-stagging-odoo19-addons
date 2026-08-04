@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <menuitem id="menu_bulk_scrap_root"
+              name="Bulk Scrap"
+              parent="stock.menu_stock_root"
+              sequence="40"/>
+
+    <menuitem id="menu_bulk_scrap"
+              name="Scrap Requests"
+              parent="menu_bulk_scrap_root"
+              action="action_bulk_scrap"
+              sequence="10"/>
+
+</odoo>

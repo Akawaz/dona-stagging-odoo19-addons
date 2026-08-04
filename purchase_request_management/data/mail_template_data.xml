@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email_template_purchase_request_for_approval" model="mail.template">
+        <field name="name">Purchase Request: Waiting for Approval</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="subject">Purchase Request {{ object.name }} - Waiting for Approval</field>
+        <field name="email_from">{{ (object.request_user_id.email_formatted) }}</field>
+        <field name="partner_to">{{ ctx.get('partner_id') }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear Approver,
+                    <br/><br/>
+                    The purchase request <strong>{{ object.name }}</strong> created by <strong>{{ object.request_user_id.name }}</strong>
+                    is waiting for your approval.
+                    <br/><br/>
+                    <strong>Date:</strong> {{ object.date }}<br/>
+                    <strong>Company:</strong> {{ object.company_id.name }}<br/>
+                    <strong>Description:</strong> {{ object.description or 'N/A' }}
+                    <br/><br/>
+                    Please review and approve it.
+                </p>
+            </div>
+        </field>
+        <field name="lang">{{ object.env.context.get('lang') }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <record id="email_template_purchase_request_approved" model="mail.template">
+        <field name="name">Purchase Request: Approved</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="subject">Purchase Request {{ object.name }} - Approved</field>
+        <field name="email_from">{{ (object.approved_by.email_formatted) }}</field>
+        <field name="partner_to">{{ ctx.get('partner_id') }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear {{ object.request_user_id.name }},
+                    <br/><br/>
+                    Your purchase request <strong>{{ object.name }}</strong> has been approved by <strong>{{ object.approved_by.name }}</strong>.
+                    <br/><br/>
+                    You can now proceed to create RFQs from the request.
+                </p>
+            </div>
+        </field>
+        <field name="lang">{{ object.env.context.get('lang') }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <record id="email_template_purchase_request_rejected" model="mail.template">
+        <field name="name">Purchase Request: Rejected</field>
+        <field name="model_id" ref="model_purchase_request"/>
+        <field name="subject">Purchase Request {{ object.name }} - Rejected</field>
+        <field name="email_from">{{ (object.rejected_by.email_formatted) }}</field>
+        <field name="partner_to">{{ ctx.get('partner_id') }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear {{ object.request_user_id.name }},
+                    <br/><br/>
+                    Your purchase request <strong>{{ object.name }}</strong> has been rejected by <strong>{{ object.rejected_by.name }}</strong>.
+                    <br/><br/>
+                    Please review and resubmit if necessary.
+                </p>
+            </div>
+        </field>
+        <field name="lang">{{ object.env.context.get('lang') }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

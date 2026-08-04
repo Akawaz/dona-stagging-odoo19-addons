@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_kitchen_prepare_list">
+
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+
+                <t t-call="web.external_layout">
+
+                    <div class="page">
+
+                        <h2 style="text-align:center;">
+                            Kitchen Preparation List
+                        </h2>
+
+                        <br/>
+
+                        <table class="table table-sm">
+
+                            <tr>
+                                <td><strong>Reference</strong></td>
+                                <td>
+                                    <span t-field="o.name"/>
+                                </td>
+
+                                <td><strong>Date</strong></td>
+                                <td>
+                                    <span t-field="o.date"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Chef</strong></td>
+                                <td>
+                                    <span t-field="o.chef_id"/>
+                                </td>
+
+                                <td><strong>Shift</strong></td>
+                                <td>
+                                    <span t-field="o.shift_id"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Company</strong></td>
+                                <td>
+                                    <span t-field="o.company_id"/>
+                                </td>
+
+                                <td><strong>Status</strong></td>
+                                <td>
+                                    <span t-field="o.state"/>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <br/>
+
+                        <table class="table table-bordered table-sm">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Product</th>
+
+                                    <th style="text-align:right;">
+                                        Current Stock
+                                    </th>
+
+                                    <th style="text-align:right;">
+                                        Par Level
+                                    </th>
+
+                                    <th style="text-align:right;">
+                                        Prepare Qty
+                                    </th>
+
+                                    <th style="text-align:right;">
+                                        Produced Qty
+                                    </th>
+
+                                    <th>Remarks</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr t-foreach="o.line_ids" t-as="line">
+
+                                    <td>
+                                        <span t-field="line.product_id"/>
+                                    </td>
+
+                                    <td style="text-align:right;">
+                                        <span t-field="line.current_stock"/>
+                                    </td>
+
+                                    <td style="text-align:right;">
+                                        <span t-field="line.par_level_qty"/>
+                                    </td>
+
+                                    <td style="text-align:right;">
+                                        <span t-field="line.prepare_qty"/>
+                                    </td>
+
+                                    <td style="text-align:right;">
+                                        <span t-field="line.produced_qty"/>
+                                    </td>
+
+                                    <td>
+                                        <span t-field="line.note"/>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        <br/><br/><br/>
+
+                        <table width="100%">
+
+                            <tr>
+
+                                <td width="40%">
+                                    ______________________
+                                    <br/>
+                                    Prepared By
+                                </td>
+
+                                <td width="20%"/>
+
+                                <td width="40%">
+                                    ______________________
+                                    <br/>
+                                    Approved By
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+            </t>
+
+        </t>
+
+    </t>
+
+</template>
+
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Privilege under Inventory category -->
+    <record model="res.groups.privilege" id="privilege_bulk_scrap">
+        <field name="name">Bulk Scrap</field>
+        <field name="category_id" ref="base.module_category_inventory"/>
+        <field name="sequence">70</field>
+    </record>
+
+    <!-- Scrap Creator group -->
+    <record id="group_scrap_creator" model="res.groups">
+        <field name="name">Scrap Creator</field>
+        <field name="sequence">10</field>
+        <field name="comment">Can create and submit bulk scrap entries.</field>
+        <field name="privilege_id" ref="privilege_bulk_scrap"/>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+
+    <!-- Scrap Reviewer group -->
+    <record id="group_scrap_reviewer" model="res.groups">
+        <field name="name">Scrap Reviewer</field>
+        <field name="sequence">20</field>
+        <field name="comment">Can review and validate bulk scrap entries.</field>
+        <field name="privilege_id" ref="privilege_bulk_scrap"/>
+        <field name="implied_ids" eval="[(4, ref('stock.group_stock_manager'))]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_contract_template_tree" model="ir.ui.view">
+        <field name="name">hr.contract.template.tree</field>
+        <field name="model">hr.contract.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="contract_type"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_contract_template_form" model="ir.ui.view">
+        <field name="name">hr.contract.template.form</field>
+        <field name="model">hr.contract.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="contract_type"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Template">
+                            <field name="body" widget="html"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_contract_template" model="ir.actions.act_window">
+        <field name="name">Contract Templates</field>
+        <field name="res_model">hr.contract.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first contract template
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hr_contract_template"
+              name="Contract Templates"
+              parent="hr.menu_hr_root"
+              action="action_hr_contract_template"
+              sequence="50"/>
+</odoo>

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ====== Journal Entry / Invoice / Bill form ====== -->
+    <record id="view_move_form_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Hide Post button (journal entries) -->
+            <xpath expr="//button[@name='action_post'][contains(@invisible, &quot;move_type != 'entry'&quot;)]" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Confirm button (invoices / bills) -->
+            <xpath expr="//button[@name='action_post'][contains(@invisible, &quot;move_type == 'entry'&quot;)]" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Reset to Draft -->
+            <xpath expr="//button[@name='button_draft']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Cancel Entry / Cancel buttons -->
+            <xpath expr="//button[@name='button_cancel']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide form delete for Makers -->
+            <xpath expr="//form" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="delete">0</attribute>
+            </xpath>
+
+            <!-- Add invisible review fields for visibility conditions -->
+            <xpath expr="//sheet" position="before">
+                <field name="review_requested" invisible="1"/>
+                <field name="reviewed_by" invisible="1"/>
+                <field name="reviewed_on" invisible="1"/>
+                <field name="can_request_review" invisible="1"/>
+            </xpath>
+
+            <!-- Review badge before the core accounting statusbar (secured group) -->
+           <xpath expr="//field[@name='state']" position="before">
+    <field name="review_state" widget="badge"
+           decoration-success="review_state == 'reviewed'"
+           decoration-warning="review_state == 'to_review'"
+           invisible="review_state == 'draft'"
+            class="ms-auto my-auto me-2"/>
+</xpath>
+            <!-- Review badge before the core accounting statusbar (standard) -->
+<!--            <xpath expr="//field[@name='state'][@widget='statusbar']" position="before">-->
+<!--                <field name="review_state" widget="badge"-->
+<!--                       decoration-success="review_state == 'reviewed'"-->
+<!--                       decoration-warning="review_state == 'to_review'"-->
+<!--                       invisible="review_state == 'draft'"-->
+<!--                       class="my-auto"/>-->
+<!--            </xpath>-->
+
+            <!-- Request for Review button (Makers always, Checkers when setting enabled) -->
+            <xpath expr="//header/button[last()]" position="after">
+                <button name="action_request_review"
+                        type="object"
+                        string="Request for Review"
+                        class="btn-primary"
+                        invisible="not can_request_review or review_state != 'draft' or state != 'draft'"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ====== Payment form ====== -->
+    <record id="view_account_payment_form_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.review.control</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add invisible review fields -->
+            <xpath expr="//sheet" position="before">
+                <field name="review_requested" invisible="1"/>
+                <field name="reviewed_by" invisible="1"/>
+                <field name="reviewed_on" invisible="1"/>
+                <field name="can_request_review" invisible="1"/>
+            </xpath>
+
+            <!-- Review badge before the core payment statusbar -->
+            <xpath expr="//field[@name='state'][@widget='statusbar']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-success="review_state == 'reviewed'"
+                       decoration-warning="review_state == 'to_review'"
+                       invisible="review_state == 'draft'"
+                        class="ms-auto my-auto me-2"/>
+            </xpath>
+
+            <!-- Hide Confirm button -->
+            <xpath expr="//button[@name='action_post']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Validate button -->
+            <xpath expr="//button[@name='action_validate']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Reset to Draft -->
+            <xpath expr="//button[@name='action_draft']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide Cancel button -->
+            <xpath expr="//button[@name='action_cancel']" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="groups">account.group_account_invoice,!button_review_control.group_maker</attribute>
+            </xpath>
+
+            <!-- Hide form delete for Makers -->
+            <xpath expr="//form" position="attributes" groups="button_review_control.group_maker">
+                <attribute name="delete">0</attribute>
+            </xpath>
+
+            <!-- Request for Review button (Makers always, Checkers when setting enabled) -->
+            <xpath expr="//header/button[last()]" position="after">
+                <button name="action_request_review"
+                        type="object"
+                        string="Request for Review"
+                        class="btn-primary"
+                        invisible="not can_request_review or review_state != 'draft' or state != 'draft'"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ====== Journal Entry / Invoice / Bill list view ====== -->
+    <record id="view_move_tree_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.move.list.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-success="review_state == 'reviewed'"
+                       decoration-warning="review_state == 'to_review'"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Invoice list view ====== -->
+    <record id="view_invoice_tree_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.invoice.list.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status_in_payment']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-success="review_state == 'reviewed'"
+                       decoration-warning="review_state == 'to_review'"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Journal Entry kanban view ====== -->
+    <record id="view_account_move_kanban_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.move.kanban.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-warning="review_state == 'to_review'"
+                       invisible="review_state != 'to_review'"
+                       class="ms-auto"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Payment list view ====== -->
+    <record id="view_account_payment_tree_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.payment.list.inherit.review.control</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-success="review_state == 'reviewed'"
+                       decoration-warning="review_state == 'to_review'"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Payment kanban view ====== -->
+    <record id="view_account_payment_kanban_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.payment.kanban.inherit.review.control</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="review_state" widget="badge"
+                       decoration-warning="review_state == 'to_review'"
+                       invisible="review_state != 'to_review'"
+                       class="ms-auto"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Search views: filters and group-by for review_state ====== -->
+
+    <!-- Journal Entry search -->
+    <record id="view_account_move_filter_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.move.search.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_move_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='unposted']" position="before">
+                <separator/>
+                <filter string="Waiting for Review" name="review_to_review"
+                        domain="[('review_state', '=', 'to_review')]"/>
+                <filter string="Reviewed" name="review_reviewed"
+                        domain="[('review_state', '=', 'reviewed')]"/>
+            </xpath>
+            <xpath expr="//group/filter[@name='status']" position="after">
+                <filter string="Review Status" name="group_by_review_state"
+                        domain="[]" context="{'group_by': 'review_state'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Invoice/Bill search -->
+    <record id="view_account_invoice_filter_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.invoice.search.inherit.review.control</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='draft']" position="before">
+                <separator/>
+                <filter string="Waiting for Review" name="review_to_review"
+                        domain="[('review_state', '=', 'to_review')]"/>
+                <filter string="Reviewed" name="review_reviewed"
+                        domain="[('review_state', '=', 'reviewed')]"/>
+            </xpath>
+            <xpath expr="//group/filter[@name='status']" position="after">
+                <filter string="Review Status" name="group_by_review_state"
+                        domain="[]" context="{'group_by': 'review_state'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Payment search -->
+    <record id="view_account_payment_search_inherit_review_control" model="ir.ui.view">
+        <field name="name">account.payment.search.inherit.review.control</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='state_draft']" position="before">
+                <separator/>
+                <filter string="Waiting for Review" name="review_to_review"
+                        domain="[('review_state', '=', 'to_review')]"/>
+                <filter string="Reviewed" name="review_reviewed"
+                        domain="[('review_state', '=', 'reviewed')]"/>
+            </xpath>
+            <xpath expr="//filter[@name='state']" position="after">
+                <filter string="Review Status" name="group_by_review_state"
+                        domain="[]" context="{'group_by': 'review_state'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ====== Server actions: Mark as Reviewed (checker group only) ====== -->
+
+    <record id="action_mark_move_reviewed" model="ir.actions.server">
+        <field name="name">Mark as Reviewed</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+        <field name="group_ids" eval="[(4, ref('button_review_control.group_checker'))]"/>
+        <field name="state">code</field>
+        <field name="code">action = records.action_mark_reviewed()</field>
+    </record>
+
+    <record id="action_mark_payment_reviewed" model="ir.actions.server">
+        <field name="name">Mark as Reviewed</field>
+        <field name="model_id" ref="account.model_account_payment"/>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_view_types">list</field>
+        <field name="group_ids" eval="[(4, ref('button_review_control.group_checker'))]"/>
+        <field name="state">code</field>
+        <field name="code">action = records.action_mark_reviewed()</field>
+    </record>
+
+</odoo>

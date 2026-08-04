@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_purchase_request_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Purchase Request: <span t-field="doc.name"/></h2>
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Request User:</strong> <span t-field="doc.request_user_id.name"/><br/>
+                                <strong>Date:</strong> <span t-field="doc.date"/><br/>
+                                <strong>Warehouse:</strong> <span t-field="doc.warehouse_id.name"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Company:</strong> <span t-field="doc.company_id.name"/><br/>
+                                <strong>Status:</strong> <span t-field="doc.state"/><br/>
+                                <strong>Approved By:</strong> <span t-field="doc.approved_by.name"/><br/>
+                            </div>
+                        </div>
+
+                        <div t-if="doc.description" class="mt16">
+                            <strong>Description:</strong>
+                            <p t-field="doc.description"/>
+                        </div>
+
+                        <h3 class="mt32">Products</h3>
+                        <t t-set="categories" t-value="doc.line_ids.mapped('product_category_id')"/>
+                        <t t-foreach="categories" t-as="category">
+                            <t t-set="cat_lines" t-value="doc.line_ids.filtered(lambda l: l.product_category_id == category)"/>
+                            <h4 class="mt16" t-esc="category.name or 'Uncategorized'"/>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th class="text-end">Required Qty</th>
+                                        <th class="text-end">Available Qty</th>
+                                        <th>Vendor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="cat_lines" t-as="line">
+                                        <tr>
+                                            <td class="text-center"><span t-esc="line_index + 1"/></td>
+                                            <td><span t-field="line.product_id.display_name"/></td>
+                                            <td><span t-field="line.description"/></td>
+                                            <td class="text-end"><span t-field="line.required_qty"/> <span t-field="line.uom_id.name"/></td>
+                                            <td class="text-end"><span t-field="line.available_qty"/></td>
+                                            <td><span t-field="line.vendor_id.name"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <div class="mt32" t-if="doc.approved_date">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Approved By:</strong> <span t-field="doc.approved_by.name"/>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <strong>Approved Date:</strong> <span t-field="doc.approved_date"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt32">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Created By:</strong> <span t-field="doc.request_user_id.name"/>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <strong>Print Date:</strong> <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

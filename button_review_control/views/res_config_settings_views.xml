@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_inherit_review_control" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.review.control</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='quick_edit_mode']" position="after">
+                <block title="Review Control" id="review_control_settings">
+                    <setting id="auto_send_review" string="Auto Send for Review"
+                             help="Automatically send invoices and bills for review when they are saved.">
+                        <field name="auto_send_review"/>
+                    </setting>
+                    <setting id="review_for_checker" string="Review for Checker"
+                             help="When enabled, entries created by checkers are also sent for review to other checkers.">
+                        <field name="review_for_checker"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

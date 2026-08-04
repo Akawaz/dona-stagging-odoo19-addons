@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kitchen_prepare_list,kitchen.prepare.list,model_kitchen_prepare_list,base.group_user,1,1,1,1
+access_kitchen_prepare_list_line,kitchen.prepare.list.line,model_kitchen_prepare_list_line,base.group_user,1,1,1,1
+access_kitchen_prepare_template,kitchen.prepare.template,model_kitchen_prepare_template,base.group_user,1,1,1,1
+access_kitchen_prepare_template_line,kitchen.prepare.template.line,model_kitchen_prepare_template_line,base.group_user,1,1,1,1
+access_kitchen_shift,kitchen.shift,model_kitchen_shift,base.group_user,1,1,1,1

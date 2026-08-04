@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_dahua_sync_log_list" model="ir.ui.view">
+        <field name="name">dahua.sync.log.list</field>
+        <field name="model">dahua.sync.log</field>
+        <field name="arch" type="xml">
+            <list string="Sync Logs">
+                <field name="create_date"/>
+                <field name="device_id"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'success'"
+                       decoration-warning="status == 'partial'"
+                       decoration-danger="status == 'error'"/>
+                <field name="records_fetched"/>
+                <field name="records_created"/>
+                <field name="records_skipped"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dahua_sync_log_form" model="ir.ui.view">
+        <field name="name">dahua.sync.log.form</field>
+        <field name="model">dahua.sync.log</field>
+        <field name="arch" type="xml">
+            <form string="Sync Log">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="device_id"/>
+                            <field name="status"/>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                        </group>
+                        <group>
+                            <field name="records_fetched"/>
+                            <field name="records_created"/>
+                            <field name="records_skipped"/>
+                        </group>
+                    </group>
+                    <group string="Details">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <group string="Debug Log" invisible="not debug_log">
+                        <field name="debug_log" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dahua_sync_log" model="ir.actions.act_window">
+        <field name="name">Sync Logs</field>
+        <field name="res_model">dahua.sync.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

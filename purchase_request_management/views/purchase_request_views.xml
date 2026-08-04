@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_request_tree" model="ir.ui.view">
+        <field name="name">purchase.request.tree</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <list string="Order Lists" decoration-info="state == 'draft'" decoration-muted="state in ('done', 'cancel')" decoration-success="state == 'approved'">
+                <field name="name" decoration-bf="1"/>
+                <field name="request_user_id"/>
+                <field name="date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="warehouse_id"/>
+                <field name="location_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'to_approve'" decoration-danger="state == 'rejected'"/>
+                <field name="purchase_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_form" model="ir.ui.view">
+        <field name="name">purchase.request.form</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <form string="Order Request">
+                <header>
+                    <button name="action_submit_for_approval" string="Submit for Approval" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state != 'to_approve'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state != 'to_approve'"/>
+                    <button name="action_create_rfq" string="Create RFQ" type="object" class="btn-primary" invisible="state != 'approved'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object" invisible="state not in ('to_approve', 'rejected', 'cancel')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('done', 'cancel')"/>
+                    <button name="action_done" string="Mark as Done" type="object" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_purchase_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="purchase_count == 0">
+                            <field name="purchase_count" widget="statinfo" string="RFQs/Orders"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="request_user_id" options="{'no_create': True}"/>
+                            <field name="date"/>
+                            <field name="warehouse_id" options="{'no_create': True}"/>
+                            <field name="location_id" options="{'no_create': True}" invisible="not warehouse_id"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="approved_by" invisible="not approved_by"/>
+                            <field name="approved_date" invisible="not approved_date"/>
+                            <field name="rejected_by" invisible="not rejected_by"/>
+                            <field name="rejected_date" invisible="not rejected_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Description..."/>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="line_ids"
+                                mode="list,kanban"
+                                context="{'default_request_id': id}"
+                                readonly="state in ('cancel', 'done')">
+                                <list string="Order Request Lines" editable="bottom" limit="200">
+                                    <control>
+                                        <create name="add_product_control" string="Add a product"/>
+                                        <button name="action_add_from_catalog" string="Catalog" type="object" class="px-4 btn-link" context="{'order_id': parent.id}"/>
+                                    </control>
+                                    <field name="product_id" options="{'no_create': True}" domain="[('purchase_ok', '=', True)]"/>
+                                    <field name="product_category_id" optional="show"/>
+                                    <field name="description" optional="show"/>
+                                    <field name="required_qty"/>
+                                    <button name="action_view_stock_quant_breakdown" type="object" icon="fa-cubes" title="View available quantity breakdown" invisible="available_qty == 0"/>
+                                    <field name="available_qty" readonly="1" string="On Hand"/>
+                                    <field name="uom_id" options="{'no_create': True}" string="UOM"/>
+<!--                                    <field name="location_id" options="{'no_create': True}"/>-->
+                                    <field name="vendor_id" options="{'no_create': True}"/>
+                                    <field name="purchase_order_id" readonly="1" optional="show" string="PO"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Approval Flow" name="approval">
+                            <field name="approval_history_ids" readonly="1">
+                                <list create="false" delete="false">
+                                    <field name="sequence" invisible="1"/>
+                                    <field name="level"/>
+                                    <field name="name"/>
+                                    <field name="user_id"/>
+                                    <field name="group_id"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'pending'" decoration-danger="state == 'rejected'"/>
+                                    <field name="approver_user_id"/>
+                                    <field name="approved_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                 <chatter/>
+<!--                <div class="oe_chatter">-->
+<!--                    <field name="message_follower_ids" widget="mail_followers"/>-->
+<!--                    <field name="activity_ids" widget="mail_activity"/>-->
+<!--                    <field name="message_ids" widget="mail_thread" options="{'display_log': True}"/>-->
+<!--                </div>-->
+            </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_kanban" model="ir.ui.view">
+        <field name="name">purchase.request.kanban</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="request_user_id"/>
+                <field name="date"/>
+                <field name="state"/>
+                <field name="company_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'to_approve'" decoration-danger="state == 'rejected'"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span><field name="request_user_id"/></span>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <span><field name="date"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_search" model="ir.ui.view">
+        <field name="name">purchase.request.search</field>
+        <field name="model">purchase.request</field>
+        <field name="arch" type="xml">
+            <search string="Order Lists">
+                <field name="name"/>
+                <field name="request_user_id"/>
+                <field name="warehouse_id"/>
+                <field name="location_id"/>
+                <field name="date"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="to_approve" string="To Approve" domain="[('state', '=', 'to_approve')]"/>
+                <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="cancel" string="Cancelled" domain="[('state', '=', 'cancel')]"/>
+                <group>
+                    <filter name="groupby_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter name="groupby_request_user" string="Request User" domain="[]" context="{'group_by': 'request_user_id'}"/>
+                    <filter name="groupby_warehouse" string="Warehouse" domain="[]" context="{'group_by': 'warehouse_id'}"/>
+                    <filter name="groupby_location" string="Location" domain="[]" context="{'group_by': 'location_id'}"/>
+                    <filter name="groupby_date" string="Date" domain="[]" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_request" model="ir.actions.act_window">
+        <field name="name">Order Lists</field>
+        <field name="res_model">purchase.request</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_purchase_request_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Order Request
+            </p>
+            <p>
+                Order requests allow you to plan and get approval for purchases.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_purchase_request_to_approve" model="ir.actions.act_window">
+        <field name="name">Order Request To Approve</field>
+        <field name="res_model">purchase.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('state', '=', 'to_approve')]</field>
+        <field name="search_view_id" ref="view_purchase_request_search"/>
+        <field name="context">{'create': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No order requests waiting for approval
+            </p>
+        </field>
+    </record>
+
+    <record id="action_purchase_request_approved" model="ir.actions.act_window">
+        <field name="name">Approved Order Requests</field>
+        <field name="res_model">purchase.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('state', 'in', ('approved', 'done'))]</field>
+        <field name="context">{'create': 0}</field>
+        <field name="search_view_id" ref="view_purchase_request_search"/>
+    </record>
+
+    <menuitem id="menu_purchase_request_root" name="Order Request" sequence="35" groups="group_purchase_request_user" web_icon="purchase_request_management,static/description/icon.png"/>
+    <menuitem id="menu_purchase_request" name="Order Lists" parent="menu_purchase_request_root" action="action_purchase_request" sequence="10"/>
+    <menuitem id="menu_purchase_request_to_approve" name="Order Request To Approve" parent="menu_purchase_request_root" action="action_purchase_request_to_approve" sequence="20" groups="group_purchase_request_approver"/>
+    <menuitem id="menu_purchase_request_approved" name="Approved Order Requests" parent="menu_purchase_request_root" action="action_purchase_request_approved" sequence="30"/>
+<!--    <menuitem id="menu_purchase_request_line" name="Request Lines" parent="menu_purchase_request_root" action="action_purchase_request_line" sequence="40"/>-->
+    <menuitem id="menu_purchase_request_config" name="Configuration" parent="menu_purchase_request_root" sequence="100" groups="group_purchase_request_admin"/>
+    <menuitem id="menu_purchase_request_approval_hierarchy" name="Approval Hierarchy" parent="menu_purchase_request_config" action="action_purchase_request_approval_hierarchy" sequence="10"/>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="purchase_order_form_inherit_price_alert" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.price.alert</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <!--
+                Red info button appears immediately when PO price exceeds product cost.
+                Hidden when price is at or below cost, and hidden after order is confirmed.
+            -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
+                <field name="is_above_cost" column_invisible="True"/>
+                <button name="action_show_price_history"
+                        type="object"
+                        icon="fa-info-circle"
+                        title="Price above cost — click to alert admins"
+                        class="btn-danger btn-sm"
+                        width="30px"
+                        invisible="not is_above_cost or parent.state in ('purchase', 'done')"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

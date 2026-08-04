@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+
+    <menuitem
+        id="menu_kitchen_root"
+        name="Kitchen Preparation"
+        sequence="25"/>
+
+    <!-- Preparation Lists -->
+
+    <menuitem
+        id="menu_kitchen_prepare_lists"
+        name="Preparation Lists"
+        parent="menu_kitchen_root"
+        action="action_kitchen_prepare_list"
+        sequence="10"/>
+
+    <!-- Reports -->
+
+    <menuitem
+        id="menu_kitchen_reports"
+        name="Reports"
+        parent="menu_kitchen_root"
+        sequence="20"/>
+
+    <!-- Configuration -->
+
+    <menuitem
+        id="menu_kitchen_configuration"
+        name="Configuration"
+        parent="menu_kitchen_root"
+        sequence="30"/>
+
+    <!-- Configuration Items -->
+
+    <menuitem
+        id="menu_kitchen_templates"
+        name="Preparation Templates"
+        parent="menu_kitchen_configuration"
+        action="action_kitchen_prepare_template"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_kitchen_shifts"
+        name="Shift Management"
+        parent="menu_kitchen_configuration"
+        action="action_kitchen_shift"
+        sequence="20"/>
+
+</odoo>

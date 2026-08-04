@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ===================================================== -->
+    <!-- Tree View -->
+    <!-- ===================================================== -->
+
+    <record id="view_kitchen_prepare_list_tree" model="ir.ui.view">
+        <field name="name">kitchen.prepare.list.tree</field>
+        <field name="model">kitchen.prepare.list</field>
+        <field name="arch" type="xml">
+            <list>
+
+                <field name="name"/>
+                <field name="date"/>
+                <field name="chef_id"/>
+                <field name="shift_id"/>
+                <field name="company_id"/>
+                <field name="state"/>
+
+            </list>
+        </field>
+    </record>
+
+
+    <!-- ===================================================== -->
+    <!-- Form View -->
+    <!-- ===================================================== -->
+
+    <record id="view_kitchen_prepare_list_form" model="ir.ui.view">
+        <field name="name">kitchen.prepare.list.form</field>
+        <field name="model">kitchen.prepare.list</field>
+        <field name="arch" type="xml">
+
+            <form string="Kitchen Preparation List">
+
+                <header>
+
+                    <button
+                            name="action_refresh_stock"
+                            type="object"
+                            string="Refresh Stock"
+                            class="btn-secondary"
+                            invisible="state != 'draft'"/>
+
+                    <button
+                            name="action_calculate_prepare_qty"
+                            type="object"
+                            string="Calculate Qty"
+                            class="btn-secondary"
+                            invisible="state != 'draft'"/>
+
+                    <button
+                            name="action_print_report"
+                            string="Print Preparation List"
+                            type="object"
+                            class="btn-secondary"
+                            icon="fa-print"/>
+
+                    <button
+                        name="action_confirm"
+                        type="object"
+                        string="Confirm"
+                        class="btn-primary"
+                        invisible="state != 'draft'"/>
+
+                    <button
+                        name="action_create_production"
+                        type="object"
+                        string="Create Production Orders"
+                        class="btn-primary"
+                        invisible="state != 'confirmed'"/>
+
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        invisible="state in ('done','cancel')"/>
+
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,confirmed,production,done"/>
+
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                        <button
+                                name="action_view_manufacturing_orders"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-industry">
+
+                            <field
+                                    name="manufacturing_count"
+                                    widget="statinfo"
+                                    string="Production Orders"/>
+
+                        </button>
+
+                    </div>
+                    <!-- Reference -->
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- Header Information -->
+
+                    <group>
+
+                        <group>
+
+                            <field name="chef_id"
+                                   readonly="state != 'draft'"/>
+
+                            <field name="shift_id"
+                                   readonly="state != 'draft'"/>
+
+                            <field name="date"
+                                   readonly="state != 'draft'"/>
+
+                        </group>
+
+                        <group>
+
+                            <field name="company_id"
+                                   readonly="1"/>
+
+                            <field name="template_id"
+                                   readonly="state != 'draft'"/>
+
+                        </group>
+
+                    </group>
+
+                    <notebook>
+
+                        <!-- ===================================== -->
+                        <!-- Products -->
+                        <!-- ===================================== -->
+
+                        <page string="Products">
+
+                            <field
+                                name="line_ids"
+                                readonly="state != 'draft'">
+
+                                <list editable="bottom"
+                                      decoration-success="production_state == 'done'"
+                                      decoration-danger="production_state == 'cancel'"
+                                      decoration-warning="production_state == 'progress'">
+
+                                    <field name="product_id"/>
+
+                                    <field name="current_stock"
+                                           readonly="1"/>
+
+                                    <field name="par_level_qty"/>
+
+                                    <field name="prepare_qty"/>
+
+                                    <field name="produced_qty"
+                                           readonly="1"/>
+
+                                    <field name="bom_id"
+                                           readonly="1"
+                                           optional="hide"/>
+
+                                    <field name="manufacturing_id"
+                                           readonly="1"
+                                           optional="hide"/>
+
+                                    <field name="production_state"
+                                           readonly="1"/>
+
+                                    <button
+                                            name="action_view_bom"
+                                            type="object"
+                                            icon="fa-info-circle"
+                                            title="Bill of Material"/>
+
+                                    <field name="note"/>
+
+                                </list>
+
+                            </field>
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+                <chatter/>
+
+            </form>
+
+        </field>
+    </record>
+
+
+<!--    &lt;!&ndash; ===================================================== &ndash;&gt;-->
+<!--    &lt;!&ndash; Search View &ndash;&gt;-->
+<!--    &lt;!&ndash; ===================================================== &ndash;&gt;-->
+
+<!--    <record id="view_kitchen_prepare_list_search" model="ir.ui.view">-->
+<!--        <field name="name">kitchen.prepare.list.search</field>-->
+<!--        <field name="model">kitchen.prepare.list</field>-->
+<!--        <field name="arch" type="xml">-->
+
+<!--            <search>-->
+
+<!--                <field name="name"/>-->
+<!--                <field name="chef_id"/>-->
+<!--                <field name="shift_id"/>-->
+<!--                <field name="template_id"/>-->
+
+<!--                <separator/>-->
+
+<!--                <filter-->
+<!--                    name="draft"-->
+<!--                    string="Draft"-->
+<!--                    domain="[('state','=','draft')]"/>-->
+
+<!--                <filter-->
+<!--                    name="confirmed"-->
+<!--                    string="Confirmed"-->
+<!--                    domain="[('state','=','confirmed')]"/>-->
+
+<!--                <filter-->
+<!--                    name="production"-->
+<!--                    string="Production"-->
+<!--                    domain="[('state','=','production')]"/>-->
+
+<!--                <filter-->
+<!--                    name="done"-->
+<!--                    string="Done"-->
+<!--                    domain="[('state','=','done')]"/>-->
+
+<!--                <group string="Group By">-->
+
+<!--                    <filter-->
+<!--                        name="group_chef"-->
+<!--                        string="Chef"-->
+<!--                        context="{'group_by':'chef_id'}"/>-->
+
+<!--                    <filter-->
+<!--                        name="group_shift"-->
+<!--                        string="Shift"-->
+<!--                        context="{'group_by':'shift_id'}"/>-->
+
+<!--                    <filter-->
+<!--                        name="group_date"-->
+<!--                        string="Date"-->
+<!--                        context="{'group_by':'date'}"/>-->
+
+<!--                </group>-->
+
+<!--            </search>-->
+
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <!-- ===================================================== -->
+    <!-- Action -->
+    <!-- ===================================================== -->
+
+<!--    <record id="action_kitchen_prepare_list" model="ir.actions.act_window">-->
+<!--        <field name="name">Kitchen Preparation Lists</field>-->
+<!--        <field name="res_model">kitchen.prepare.list</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--    </record>-->
+
+        <record id="action_kitchen_prepare_list" model="ir.actions.act_window">
+        <field name="name">Kitchen Preparation Lists</field>
+        <field name="res_model">kitchen.prepare.list</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

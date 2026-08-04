@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <record id="approval_hierarchy_manager" model="purchase.request.approval.hierarchy">
+        <field name="name">Purchase Manager Approval</field>
+        <field name="level">1</field>
+        <field name="group_id" ref="purchase.group_purchase_manager"/>
+    </record>
+</odoo>

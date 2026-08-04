@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_price_review_wizard" model="ir.actions.act_window">
+        <field name="name">Review Price Changes</field>
+        <field name="res_model">purchase.price.review.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_price_review_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.price.review.wizard.form</field>
+        <field name="model">purchase.price.review.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Review Price Changes">
+                <sheet>
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fa fa-exclamation-triangle me-2"/>
+                        <strong>Price increase detected on the following products:</strong>
+                    </div>
+                    <field name="purchase_order_id" invisible="1"/>
+                    <field name="price_increase_summary" readonly="1" widget="html"/>
+                </sheet>
+                <footer>
+                    <button string="Send Alerts to Admins"
+                            name="action_send_alerts"
+                            type="object"
+                            class="btn-danger"
+                            icon="fa-bell"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

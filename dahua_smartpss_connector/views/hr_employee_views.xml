@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_form_inherit_dahua_smartpss" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.dahua.smartpss</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Dahua Device" name="dahua_smartpss_device">
+                    <group>
+                        <group string="Identification">
+                            <field name="dahua_person_id"
+                                   placeholder="User ID as enrolled on the Dahua device"/>
+                            <field name="dahua_card_no"/>
+                        </group>
+                        <group string="Enrollment Status">
+                            <field name="dahua_enrolled"/>
+                            <field name="dahua_last_pushed_device_id"/>
+                            <button name="action_push_to_dahua" type="object"
+                                    string="Push to Dahua Device" class="btn-primary"
+                                    icon="fa-upload"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">
+                        The "Dahua Device User ID" must match the User ID this employee is
+                        enrolled with on the device, so incoming punches are matched to this
+                        employee. Use "Push to Dahua Device" to create/update this user on a
+                        device (biometric fingerprint/face templates must still be captured
+                        at the terminal).
+                    </p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_tree_inherit_dahua_smartpss" model="ir.ui.view">
+        <field name="name">hr.employee.list.inherit.dahua.smartpss</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="dahua_person_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
