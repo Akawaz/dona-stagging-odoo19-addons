@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- list View -->
+    <record id="view_hr_contract_template_list" model="ir.ui.view">
+        <field name="name">hr.contract.template.list</field>
+        <field name="model">hr.contract.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="nationality_type"/>
+                <field name="company_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_hr_contract_template_form" model="ir.ui.view">
+        <field name="name">hr.contract.template.form</field>
+        <field name="model">hr.contract.template</field>
+        <field name="arch" type="xml">
+            <form string="Contract Template">
+
+                <sheet>
+
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="nationality_type"/>
+                        </group>
+
+                        <group>
+                            <field name="company_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <separator string="Contract Body"/>
+
+                    <field name="body"
+                           widget="html"
+                           nolabel="1"/>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_hr_contract_template_search" model="ir.ui.view">
+        <field name="name">hr.contract.template.search</field>
+        <field name="model">hr.contract.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hr_contract_template" model="ir.actions.act_window">
+        <field name="name">Contract Templates</field>
+        <field name="res_model">hr.contract.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Root Configuration Menu -->
+    <menuitem
+            id="menu_contract_configuration"
+            name="Configuration"
+            parent="hr.menu_hr_root"
+            sequence="90"/>
+
+    <!-- Contract Templates -->
+    <menuitem
+            id="menu_hr_contract_templates"
+            name="Contract Templates"
+            parent="menu_contract_configuration"
+            action="action_hr_contract_template"
+            sequence="10"/>
+</odoo>

@@ -1,0 +1,1812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="employee_contract">
+
+        <t t-call="web.html_container">
+
+            <style>
+
+                /* Page */
+
+                @page {
+                size: A4 portrait;
+                margin: 0;
+                }
+
+                html,
+                body {
+                margin: 0 !important;
+                padding: 0 !important;
+                }
+
+
+                /* Contract page */
+
+                .contract-page {
+                position: relative;
+
+                width: 100%;
+                min-height: 297mm;
+
+                margin: 0;
+                padding: 0;
+
+                box-sizing: border-box;
+
+                page-break-after: always;
+                }
+
+                .contract-page:last-child {
+                page-break-after: auto;
+                }
+
+
+                /* Header */
+
+                .contract-header {
+                position: absolute;
+
+                top: 0;
+                left: 0;
+
+                width: 100% !important;
+                height: 33.9mm;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                line-height: 0;
+
+                z-index: 1000;
+                }
+
+                .contract-header img {
+                display: block;
+
+                width: 100% !important;
+                height: 33.9mm;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                border: 0;
+
+                max-width: none !important;
+                }
+
+
+                /* Footer */
+
+                .contract-footer {
+                position: absolute;
+
+                left: 0;
+                bottom: 0;
+
+                width: 100% !important;
+                height: 25.6mm;
+
+                margin: 0 !important;
+                padding: 0 !important;
+
+                z-index: 1000;
+
+                line-height: 0;
+                }
+
+                .contract-footer img {
+                display: block;
+
+                position: absolute;
+
+                left: 0;
+                bottom: 0;
+
+                width: 100% !important;
+                height: 25.6mm;
+
+                margin: 0 !important;
+                padding: 0 !important;
+                padding-top: 25mm;
+
+                border: 0;
+
+                max-width: none !important;
+                }
+
+
+                /* Contract body */
+
+                .contract-body {
+                position: relative;
+
+                width: 100%;
+
+                margin: 0;
+
+                padding-top: 33.9mm;
+                padding-bottom: 25.6mm;
+
+                padding-left: 12mm;
+                padding-right: 12mm;
+
+                box-sizing: border-box;
+
+                font-family: Calibri, Arial, sans-serif;
+
+                font-size: 11pt;
+                line-height: 1.45;
+                }
+
+
+                /* Title */
+
+                h2 {
+                margin: 0 0 6px 0;
+                padding: 0;
+
+                text-align: center;
+
+                font-size: 18pt;
+                font-weight: bold;
+
+                page-break-after: avoid;
+                }
+
+
+                /* Subtitle */
+
+                .contract-subtitle {
+                margin: 0 0 15px 0;
+                padding: 0;
+
+                text-align: center;
+
+                font-size: 10pt;
+                }
+
+
+                /* Introduction */
+
+                .contract-introduction {
+                margin: 0 0 12px 0;
+                padding: 0;
+                }
+
+
+                /* Section headings */
+
+                h3 {
+                margin-top: 14px;
+                margin-bottom: 6px;
+
+                padding: 0;
+
+                font-size: 13pt;
+                font-weight: bold;
+
+                page-break-after: avoid;
+                }
+
+
+                /* Paragraphs */
+
+                p {
+                margin-top: 0;
+                margin-bottom: 8px;
+
+                padding: 0;
+
+                text-align: justify;
+                }
+
+
+                /* Lists */
+
+                ul {
+                margin-top: 4px;
+                margin-bottom: 9px;
+
+                padding-left: 20px;
+                }
+
+                li {
+                margin-bottom: 3px;
+                }
+
+
+                /* Employee and employer table */
+
+                .contract-table {
+                width: 100%;
+
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                margin-top: 10px;
+                margin-bottom: 16px;
+
+                font-size: 10pt;
+
+                table-layout: fixed;
+
+                page-break-inside: avoid;
+                }
+
+                .contract-table th {
+                border: 1px solid #000;
+
+                background: #efefef;
+
+                padding: 6px;
+
+                text-align: left;
+
+                font-weight: bold;
+                }
+
+                .contract-table td {
+                border: 1px solid #000;
+
+                padding: 6px;
+
+                vertical-align: top;
+                }
+
+
+                /* Inner information table */
+
+                .contract-table table {
+                width: 100%;
+
+                border-collapse: collapse;
+                border-spacing: 0;
+
+                table-layout: fixed;
+                }
+
+                .contract-table table td {
+                border: none;
+
+                padding: 3px;
+
+                vertical-align: top;
+                }
+
+
+                /* Job description */
+
+                .job-description {
+                margin-top: 0;
+                margin-bottom: 10px;
+                }
+
+                .job-description p {
+                margin-bottom: 6px;
+                }
+
+                .job-description ul {
+                margin-top: 4px;
+                margin-bottom: 8px;
+                }
+
+
+                /* Salary */
+
+                .salary-section {
+                margin-top: 14px;
+                }
+
+
+                /* Signature table */
+
+                .signature-table {
+                width: 100%;
+
+                border-collapse: collapse;
+
+                margin-top: 20px;
+
+                table-layout: fixed;
+
+                page-break-inside: avoid;
+                }
+
+                .signature-table th,
+                .signature-table td {
+                border: 1px solid #000;
+
+                padding: 7px;
+
+                vertical-align: top;
+                }
+
+
+                /* Page breaks */
+
+                table {
+                page-break-inside: avoid;
+                }
+
+                tr {
+                page-break-inside: avoid;
+                }
+
+                h2,
+                h3 {
+                page-break-after: avoid;
+                }
+
+            </style>
+
+            <!--EMPLOYEE CONTRACT-->
+
+            <t t-foreach="docs" t-as="employee">
+
+                <t t-set="company" t-value="employee.company_id"/>
+
+                <t t-if="employee.country_id and employee.country_id.code == 'BH'">
+                    <!--PAGE 1-->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+                            <h2>
+                                Employment Contract (Open-Ended)
+                            </h2>
+
+                            <p style="text-align:center;margin-bottom:25px;">
+
+                                (Bahrain &#8211; In accordance with Labour Law No. 36 of 2012)
+
+                            </p>
+
+
+                            <p>
+
+                                This Employment Agreement ("Agreement") is made on
+
+                                <strong>
+                                    <t t-out="values['agreement_date']"/>
+                                </strong>
+
+                                and entered into by and between:
+
+                            </p>
+
+
+                            <!-- EMPLOYER / EMPLOYEE TABLE -->
+
+                            <table class="contract-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Employer</th>
+
+                                        <th>Employee</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>
+                                                <t t-out="company.name"/>
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                <t t-out="employee.name"/>
+                                            </strong>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>CR No:</strong>
+
+                                            <t t-out="company.contract_cr_number"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Passport / CPR:</strong>
+
+                                            <t t-out="employee.identification_id"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>Employer Address:</strong>
+
+                                            <br/>
+
+                                            <t t-out="company.contract_address"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Employee Address:</strong>
+
+                                            <br/>
+
+                                            <t t-out="values['employee_address']"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>Represented by:</strong>
+
+                                            <t t-out="company.contract_representative"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Nationality:</strong>
+
+                                            <t t-out="employee.country_id.name"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td colspan="2">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Job Title</strong>
+
+                                                        <br/>
+
+                                                        <t t-out="version.job_id.name"/>
+
+                                                    </td>
+
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Start Date</strong>
+
+                                                        <br/>
+
+                                                        <t t-out="values['contract_start']"/>
+
+                                                    </td>
+
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Contract Type</strong>
+
+                                                        <br/>
+
+                                                        Open-Ended
+
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+
+                            <!-- =================================================
+                                 1. JOB DESCRIPTION
+                                 DYNAMIC
+                                 ================================================= -->
+
+                            <h3>
+                                1. Job Description
+                            </h3>
+
+
+                            <p>
+                                The Employee shall perform duties including, but not limited to:
+                            </p>
+
+
+                            <div class="job-description">
+
+                                <t t-if="values['job_description']">
+
+                                    <div t-raw="values['job_description']"/>
+
+                                </t>
+
+                                <t t-else="">
+
+                                    <p>
+                                        The Employee's duties shall be as reasonably assigned
+                                        by the Employer according to the requirements of the position.
+                                    </p>
+
+                                </t>
+
+                            </div>
+
+
+                            <p>
+                                The Employer may reasonably update duties as necessary for business needs.
+                            </p>
+
+
+                            <!-- =================================================
+                                 2. WORKING HOURS
+                                 ================================================= -->
+
+                            <h3>
+                                2. Working Hours
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+                                    08:00 AM – 5:00 PM, One hour Break, 5 days per week
+                                </li>
+
+                                <li>
+                                    Two Days off weekly, day off determined based on business needs.
+                                </li>
+
+                            </ul>
+
+
+                            <p>
+
+                                The Employee agrees to work outside normal hours, including weekends
+                                and public holidays, if required for events, marketing shoots,
+                                urgent work, or brand-related needs. Overtime shall comply with
+                                the Bahraini labour law.
+
+                            </p>
+
+
+                            <!-- =================================================
+                                 3. SALARY & DEDUCTIONS
+                                 ================================================= -->
+
+                            <h3>
+                                3. Salary &amp; Deductions
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+
+                                    Monthly Salary:
+
+                                    <strong>
+
+                                        <t t-out="'%.3f' % version.wage"/>
+
+                                        BHD
+
+                                    </strong>
+
+                                </li>
+
+                                <li>
+                                    8% of employee SIO deduction applies monthly salary
+                                </li>
+
+                            </ul>
+
+                            <!-- =================================================
+                                 4. PROBATION
+                                 ================================================= -->
+
+                            <h3>
+                                4. Probation
+                            </h3>
+
+                            <ul>
+
+                                <li>
+                                    3-month probation period
+                                </li>
+
+                                <li>
+                                    During probation, either party may terminate in accordance
+                                    with Article 99 of the Bahrain Labour Law without compensation.
+                                </li>
+
+                            </ul>
+
+                            <!-- =================================================
+                                 5. BENEFITS
+                                 ================================================= -->
+
+                            <h3>
+                                5. Benefits
+                            </h3>
+
+                            <p>
+                                As per the Bahraini labour law, unless otherwise stated.
+                            </p>
+
+
+                            <!-- =================================================
+                                 6. CONDUCT & CONFIDENTIALITY
+                                 ================================================= -->
+
+                            <h3>
+                                6. Conduct &amp; Confidentiality
+                            </h3>
+
+                            <p>
+                                The Employee shall:
+                            </p>
+
+                            <ul>
+
+                                <li>
+                                    Maintain high professional conduct
+                                </li>
+
+                                <li>
+                                    Protect all business information
+                                </li>
+
+                                <li>
+                                    Not share or copy any brand materials, menus, recipes,
+                                    designs, pricing, suppliers, or work files
+                                </li>
+
+                                <li>
+                                    Not work for, support, or produce content for competitors
+                                    during employment
+                                </li>
+
+                                <li>
+                                    Not defame, damage, or harm the company, brand, partners,
+                                    employees, or reputation in any form All work produced
+                                    remains the exclusive property of Dona’s Wonders W.L.L.
+                                </li>
+
+                            </ul>
+
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                    <!--PAGE 2-->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+                            <!-- =================================================
+                                 7. INTELLECTUAL PROPERTY
+                                 ================================================= -->
+
+                            <h3>
+                                7. Intellectual Property
+                            </h3>
+
+                            <p>
+
+                                All designs, photos, videos, campaigns, branding material,
+                                files, and content created during employment are the exclusive
+                                property of the Employer. Employees cannot use, share, delete,
+                                or retain copies without written approval.
+
+                            </p>
+
+
+                            <!-- =================================================
+                                 8. COMPANY EQUIPMENT & FILES
+                                 ================================================= -->
+
+                            <h3>
+                                8. Company Equipment &amp; Files
+                            </h3>
+
+                            <ul>
+
+                                <li>
+                                    All devices, files, assets, passwords, and data must be
+                                    returned immediately upon termination
+                                </li>
+
+                                <li>
+                                    Access to brand folders, systems, and so ware must not be misused
+                                </li>
+
+                                <li>
+                                    Failure to return files or deletion of files is grounds
+                                    for legal ac on and criminal complaint (Cyber Security Law)
+                                </li>
+
+                            </ul>
+                            <!-- =================================================
+                                 9. LEAVE
+                                 ================================================= -->
+
+                            <h3>
+                                9. Leave
+                            </h3>
+
+                            <p>
+                                As per the Bahrain labour law.
+                            </p>
+
+
+                            <!-- =================================================
+                                 10. DISCIPLINARY & TERMINATION
+                                 ================================================= -->
+
+                            <h3>
+                                10. Disciplinary &amp; Termination
+                            </h3>
+
+                            <p>
+
+                                The Employer may take disciplinary action or terminate employment
+                                in accordance with Articles 99, 107, 113 of the Bahrain Labour Law
+                                for reasons including but not limited to:
+
+                            </p>
+
+                            <ul>
+
+                                <li>
+                                    Misconduct or refusal to follow instructions
+                                </li>
+
+                                <li>
+                                    Absence without a valid reason
+                                </li>
+
+                                <li>
+                                    Damaging company reputation
+                                </li>
+
+                                <li>
+                                    Breach of confidentiality / IP
+                                </li>
+
+                                <li>
+                                    Poor performance
+                                </li>
+
+                                <li>
+                                    Negligence or failure to meet duties
+                                </li>
+
+                                <li>
+                                    Refusal to work during events or urgent brand needs
+                                </li>
+
+                                <li>
+                                    Abuse of systems or destruction of files
+                                </li>
+
+                                <li>
+                                    Sharing private company data or creative assets
+                                </li>
+
+                            </ul>
+
+                            <p>
+                                Notice period as per law.
+                            </p>
+
+                            <!-- =================================================
+                                 11. NON-DISPARAGEMENT
+                                 ================================================= -->
+
+                            <h3>
+                                11. Non-Disparagement
+                            </h3>
+
+                            <p>
+
+                                The employee shall not make negative remarks, public or private,
+                                regarding the company, its brand, or its management.
+
+                            </p>
+
+                            <p>
+                                Violation may result in termination &amp; legal action.
+                            </p>
+
+
+                            <!-- =================================================
+                                 12. NON-COMPETITION / NON-SOLICITATION
+                                 ================================================= -->
+
+                            <h3>
+                                12. Non-Competition / Non-Solicitation
+                            </h3>
+
+                            <p>
+                                During employment and for 1 year a er termination, the employee may not:
+                            </p>
+
+                            <ul>
+
+                                <li>
+                                    Work for or assist any gluten-free, bakery, restaurant,
+                                    catering, or dessert competitor in Bahrain in a creative/branding capacity
+                                </li>
+
+                                <li>
+                                    Solicit Dona’s Wonders customers or staff
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                    <!--PAGE 3-->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+
+                            <!-- =================================================
+                                 13. LIABILITY & CLAIMS
+                                 ================================================= -->
+
+                            <h3>
+                                13. Liability &amp; Claims
+                            </h3>
+
+                            <p>
+                                The employee agrees:
+                            </p>
+
+                            <ul>
+
+                                <li>
+                                    Not to pursue claims beyond statutory entitlements under labour law
+                                </li>
+
+                                <li>
+                                    To follow internal complaint procedures first
+                                </li>
+
+                                <li>
+                                    That company property &amp; brand IP are protected under
+                                    Bahrain Cyber &amp; Commercial Laws
+                                </li>
+
+                                <li>
+                                    That false claims or reputational damage may result in legal action
+                                </li>
+
+                            </ul>
+
+
+                            <!-- =================================================
+                                 14. GOVERNING LAW
+                                 ================================================= -->
+
+                            <h3>
+                                14. Governing Law
+                            </h3>
+
+                            <p>
+                                The laws of the Kingdom of Bahrain govern this agreement.
+                            </p>
+
+
+                            <!-- =================================================
+                                 15. ENTIRE AGREEMENT
+                                 ================================================= -->
+
+                            <h3>
+                                15. Entire Agreement
+                            </h3>
+
+                            <p>
+                                This agreement supersedes all prior discussions.
+                                Amendments must be in writing.
+                            </p>
+
+                            <!-- =================================================
+                                 SIGNATURES
+                                 ================================================= -->
+
+                            <h3>
+                                Signatures
+                            </h3>
+
+
+                            <table class="signature-table">
+
+                                <tr>
+
+                                    <th width="50%">
+                                        Employer Name:
+                                    </th>
+
+                                    <th width="50%">
+                                        Employee
+                                    </th>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+
+                                        <strong>
+                                            <t t-out="company.name"/>
+                                        </strong>
+
+                                        <br/>
+                                        <br/>
+
+                                        Signature:
+
+                                        ______________________
+
+                                        <br/>
+                                        <br/>
+
+                                        Date:
+
+                                        ______________________
+
+                                    </td>
+
+
+                                    <td>
+
+                                        I,
+
+                                        <strong>
+                                            <t t-out="employee.name"/>
+                                        </strong>
+
+                                        ,agree to the terms above.
+
+                                        <br/>
+                                        <br/>
+
+                                        Signature:
+
+                                        ______________________
+
+                                        <br/>
+                                        <br/>
+
+                                        Date:
+
+                                        ______________________
+
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+                </t>
+
+                <!-- NON-BAHRAINI CONTRACT -->
+
+                <t t-if="employee.country_id and employee.country_id.code != 'BH'">
+
+                    <!-- PAGE 1 -->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+                            <h2>
+                                Employment Contract (Open-Ended)
+                            </h2>
+
+                            <p style="text-align:center;margin-bottom:25px;">
+
+                                (Bahrain &#8211; In accordance with Labor Law No. 36 of 2012)
+
+                            </p>
+
+
+                            <p>
+
+                                This Employment Agreement ("Agreement") is made on
+
+                                <strong>
+                                    <t t-out="values['agreement_date']"/>
+                                </strong>
+
+                                and entered into by and between:
+
+                            </p>
+
+
+                            <!-- EMPLOYER / EMPLOYEE TABLE -->
+
+                            <table class="contract-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Employer</th>
+
+                                        <th>Employee</th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>
+                                                <t t-out="company.name"/>
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                <t t-out="employee.name"/>
+                                            </strong>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>CR No:</strong>
+
+                                            <t t-out="company.contract_cr_number"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Passport / CPR No.:</strong>
+
+                                            <t t-out="employee.identification_id"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>Address:</strong>
+
+                                            <br/>
+
+                                            <t t-out="company.contract_address"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Address:</strong>
+
+                                            <br/>
+
+                                            <t t-out="values['employee_address']"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+
+                                            <strong>Represented by:</strong>
+
+                                            <t t-out="company.contract_representative"/>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>Nationality:</strong>
+
+                                            <t t-out="employee.country_id.name"/>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td colspan="2">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Job Title</strong>
+
+                                                        <br/>
+
+                                                        <t t-out="version.job_id.name"/>
+
+                                                    </td>
+
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Start Date</strong>
+
+                                                        <br/>
+
+                                                        <t t-out="values['contract_start']"/>
+
+                                                    </td>
+
+
+                                                    <td style="width:33%;">
+
+                                                        <strong>Contract Type</strong>
+
+                                                        <br/>
+
+                                                        Open-Ended
+
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+
+                            <!-- 1. JOB DESCRIPTION -->
+
+                            <h3>
+                                1. Job Description
+                            </h3>
+
+
+                            <p>
+
+                                The
+
+                                <strong>
+                                    <t t-out="version.job_id.name"/>
+                                </strong>
+
+                                is responsible for:
+
+                            </p>
+
+
+                            <div class="job-description">
+
+                                <t t-if="values['job_description']">
+
+                                    <div t-raw="values['job_description']"/>
+
+                                </t>
+
+                                <t t-else="">
+
+                                    <p>
+
+                                        The Employee's duties shall be as reasonably assigned
+                                        by the Employer according to the requirements of the position.
+
+                                    </p>
+
+                                </t>
+
+                            </div>
+
+
+                            <!-- 2. WORKING HOURS -->
+
+                            <h3>
+                                2. Working Hours
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+                                    ( &nbsp;&nbsp;&nbsp; ) Hours and One hour Break,
+                                    ( &nbsp;&nbsp;&nbsp; ) days per week
+                                </li>
+
+                                <li>
+                                    ( &nbsp;&nbsp;&nbsp; ) Day off weekly,
+                                    day off determined based on business needs.
+                                </li>
+
+                            </ul>
+
+
+                            <!-- 3. SALARY -->
+
+                            <h3>
+                                3. Salary
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+
+                                    Monthly Salary:
+
+                                    <br/>
+
+                                    Basic BHD
+
+                                    <strong>
+                                        (
+                                        <t t-out="'%.3f' % version.wage"/>
+                                        )
+                                    </strong>
+
+                                    +
+
+                                    Allowances
+
+                                    <strong>
+                                        ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )
+                                    </strong>
+
+                                    BHD
+
+                                </li>
+
+
+                                <li>
+
+                                    TOTAL =
+
+                                    <strong>
+                                        <t t-out="'%.3f' % version.wage"/>
+                                    </strong>
+
+                                    BHD
+
+                                </li>
+
+                            </ul>
+
+
+                            <!-- 4. PROBATION -->
+
+                            <h3>
+                                4. Probation
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+                                    3-month probation period.
+                                </li>
+
+                            </ul>
+
+
+                            <!-- 5. BENEFITS -->
+
+                            <h3>
+                                5. Benefits
+                            </h3>
+
+
+                            <p>
+                                As per the Bahraini labor law, unless otherwise stated.
+                            </p>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PAGE 2 -->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+                            <!-- 6. CONDUCT & CONFIDENTIALITY -->
+
+                            <h3>
+                                6. Conduct &amp; Confidentiality
+                            </h3>
+
+
+                            <p>
+                                The Employee shall:
+                            </p>
+
+
+                            <ul>
+
+                                <li>
+                                    Maintain high professional conduct
+                                </li>
+
+                                <li>
+                                    Protect all business information
+                                </li>
+
+                                <li>
+                                    Not share or copy any brand materials, menus, recipes,
+                                    designs, pricing, suppliers, or work files
+                                </li>
+
+                                <li>
+                                    Not work for, support, or produce content for competitors
+                                    during employment
+                                </li>
+
+                                <li>
+                                    Not defame, damage, or harm the company, brand, partners,
+                                    employees, or reputation in any form
+                                </li>
+
+                            </ul>
+
+
+                            <p>
+
+                                All work produced remains the exclusive property of
+                                Dona’s Wonders W.L.L.
+
+                            </p>
+
+
+                            <!-- 7. INTELLECTUAL PROPERTY -->
+
+                            <h3>
+                                7. Intellectual Property
+                            </h3>
+
+
+                            <p>
+
+                                All intellectual property, business information, and work
+                                products created or obtained during employment belong
+                                exclusively to the Company and must remain confidential.
+
+                            </p>
+
+
+                            <!-- 8. COMPANY EQUIPMENT & FILES -->
+
+                            <h3>
+                                8. Company Equipment &amp; Files
+                            </h3>
+
+
+                            <ul>
+
+                                <li>
+
+                                    All devices, files, assets, passwords, and data must be
+                                    returned immediately upon termination
+
+                                </li>
+
+                                <li>
+
+                                    Access to brand folders, systems, and software must not
+                                    be misused
+
+                                </li>
+
+                                <li>
+
+                                    Failure to return files or deletion of files is grounds
+                                    for legal action and criminal complaint
+                                    (Cyber Security Law)
+
+                                </li>
+
+                            </ul>
+
+
+                            <!-- 9. LEAVE -->
+
+                            <h3>
+                                9. Leave
+                            </h3>
+
+
+                            <p>
+                                As per the Bahrain labor law.
+                            </p>
+
+
+                            <!-- 10. GOVERNING LAW -->
+
+                            <h3>
+                                10. Governing Law
+                            </h3>
+
+
+                            <p>
+
+                                The laws of the Kingdom of Bahrain govern this agreement.
+
+                            </p>
+
+
+                            <!-- 11. ENTIRE AGREEMENT -->
+
+                            <h3>
+                                11. Entire Agreement
+                            </h3>
+
+
+                            <p>
+
+                                This agreement supersedes all prior discussions.
+                                Amendments must be in writing.
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                    <!-- PAGE 3 -->
+
+                    <div class="contract-page">
+
+                        <!-- HEADER -->
+
+                        <div class="contract-header">
+
+                            <t t-if="company.contract_header_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_header_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+
+                        <!-- BODY -->
+
+                        <div class="contract-body">
+
+                            <h3>
+                                Signatures
+                            </h3>
+
+
+                            <table class="signature-table">
+
+                                <tr>
+
+                                    <th width="50%">
+                                        Employer Name:
+                                    </th>
+
+                                    <th width="50%">
+                                        Employee:
+                                    </th>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+
+                                        <strong>
+                                            <t t-out="company.name"/>
+                                        </strong>
+
+                                        <br/>
+                                        <br/>
+
+                                        Signature:
+
+                                        ______________________
+
+                                        <br/>
+                                        <br/>
+
+                                        Date:
+
+                                        ______________________
+
+                                    </td>
+
+
+                                    <td>
+
+                                        I,
+
+                                        <strong>
+                                            <t t-out="employee.name"/>
+                                        </strong>
+
+                                        , agree to the terms above.
+
+                                        <br/>
+                                        <br/>
+
+                                        Signature:
+
+                                        ______________________
+
+                                        <br/>
+                                        <br/>
+
+                                        Date:
+
+                                        ______________________
+
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="contract-footer">
+
+                            <t t-if="company.contract_footer_image">
+
+                                <img
+                                        t-att-src="image_data_uri(company.contract_footer_image)"
+                                />
+
+                            </t>
+
+                        </div>
+
+                    </div>
+
+                </t>
+
+            </t>
+        </t>
+    </template>
+</odoo>
