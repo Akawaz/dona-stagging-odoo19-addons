@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="template_bahraini"
+            model="hr.contract.template">
+
+        <field name="name">Bahraini Contract</field>
+
+        <field name="nationality_type">bahraini</field>
+
+        <field name="body">
+            <![CDATA[
+                <h2 style="text-align:center;">Employment Contract</h2>
+                    <p>
+                    Employee:
+                    <strong>${employee_name}</strong>
+                    </p>
+
+                    <p>
+                    Position:
+                    <strong>${job_title}</strong>
+                    </p>
+
+                    <p>
+                    Salary:
+                    <strong>${salary}</strong>
+                    </p>
+            ]]>
+        </field>
+
+    </record>
+
+    <record id="template_non_bahraini"
+            model="hr.contract.template">
+
+        <field name="name">Non-Bahraini Contract</field>
+
+        <field name="nationality_type">non_bahraini</field>
+
+        <field name="body">
+            <![CDATA[
+                <h2 style="text-align:center;">Employment Contract</h2>
+
+                    <p>
+                    Employee:
+                    <strong>${employee_name}</strong>
+                    </p>
+
+                    <p>
+                    Position:
+                    <strong>${job_title}</strong>
+                    </p>
+
+                    <p>
+                    Salary:
+                    <strong>${salary}</strong>
+                    </p>
+            ]]>
+        </field>
+
+    </record>
+
+</odoo>

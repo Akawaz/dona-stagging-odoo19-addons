@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="view_hr_job_form_contract_print" model="ir.ui.view">
+
+        <field name="name">hr.job.form.contract.print</field>
+
+        <field name="model">hr.job</field>
+
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='job_description_page']" position="inside">
+
+                <group string="Contract Information">
+
+                    <field
+                        name="contract_job_description"
+                        string="Contract Job Description"
+                    />
+
+                </group>
+
+            </xpath>
+
+        </field>
+
+    </record>
+
+</odoo>

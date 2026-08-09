@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_contract"
+            model="ir.ui.view">
+
+        <field name="name">res.config.settings.contract.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+
+                <div class="app_settings_block"
+                     string="Employee Contract"
+                     data-string="Employee Contract">
+
+                    <h2>Employee Contract</h2>
+
+                    <div class="row mt16 o_settings_container">
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+
+                            <div class="o_setting_left_pane"/>
+
+                            <div class="o_setting_right_pane">
+
+                                <label for="contract_representative"/>
+
+                                <div class="text-muted">
+                                    Company representative who signs employment contracts.
+                                </div>
+
+                                <field name="contract_representative"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+
+                            <div class="o_setting_left_pane"/>
+
+                            <div class="o_setting_right_pane">
+
+                                <label for="contract_cr_number"/>
+
+                                <div class="text-muted">
+                                    Commercial Registration Number.
+                                </div>
+
+                                <field name="contract_cr_number"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 o_setting_box">
+
+                            <div class="o_setting_left_pane"/>
+
+                            <div class="o_setting_right_pane">
+
+                                <label for="contract_address"/>
+
+                                <field name="contract_address"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+
+                            <div class="o_setting_left_pane"/>
+
+                            <div class="o_setting_right_pane">
+
+                                <label for="contract_header_image"/>
+
+                                <field name="contract_header_image"
+                                       widget="image"
+                                       class="oe_avatar"/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+
+                            <div class="o_setting_left_pane"/>
+
+                            <div class="o_setting_right_pane">
+
+                                <label for="contract_footer_image"/>
+
+                                <field name="contract_footer_image"
+                                       widget="image"
+                                       class="oe_avatar"/>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </xpath>
+
+        </field>
+
+    </record>
+
+</odoo>
