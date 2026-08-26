@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_powerbi_root" name="Power BI" sequence="90"/>
+
+    <menuitem id="menu_powerbi_configuration" name="Configuration" parent="menu_powerbi_root" sequence="10"/>
+    <menuitem id="menu_powerbi_config" name="Power BI Connections" parent="menu_powerbi_configuration"
+              action="action_powerbi_config" sequence="10"
+              groups="powerbi_connector.group_powerbi_manager"/>
+
+    <menuitem id="menu_powerbi_synchronization" name="Synchronization" parent="menu_powerbi_root" sequence="20"/>
+    <menuitem id="menu_powerbi_sync_log" name="Sync Logs" parent="menu_powerbi_synchronization"
+              action="action_powerbi_sync_log" sequence="10"/>
+</odoo>

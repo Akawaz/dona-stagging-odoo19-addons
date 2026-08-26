@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_powerbi_config_list" model="ir.ui.view">
+        <field name="name">powerbi.config.list</field>
+        <field name="model">powerbi.config</field>
+        <field name="arch" type="xml">
+            <list string="Power BI Connections">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="workspace_id"/>
+                <field name="sync_frequency"/>
+                <field name="connection_state" widget="badge"
+                       decoration-success="connection_state == 'success'"
+                       decoration-danger="connection_state == 'failed'"/>
+                <field name="last_sync_status" widget="badge"
+                       decoration-success="last_sync_status == 'success'"
+                       decoration-warning="last_sync_status == 'partial'"
+                       decoration-danger="last_sync_status == 'failed'"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_powerbi_config_search" model="ir.ui.view">
+        <field name="name">powerbi.config.search</field>
+        <field name="model">powerbi.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Power BI Connections">
+                <field name="name"/>
+                <field name="workspace_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Connected" name="connected" domain="[('connection_state', '=', 'success')]"/>
+                <filter string="Failed" name="failed" domain="[('connection_state', '=', 'failed')]"/>
+                <group>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_powerbi_config_form" model="ir.ui.view">
+        <field name="name">powerbi.config.form</field>
+        <field name="model">powerbi.config</field>
+        <field name="arch" type="xml">
+            <form string="Power BI Connection">
+                <header>
+                    <button name="action_test_connection" type="object" string="Test Connection"
+                            class="btn-secondary"/>
+                    <button name="action_open_sync_wizard" type="object" string="Sync Now"
+                            class="btn-primary"/>
+                    <button name="action_full_sync" type="object" string="Full Sync"
+                            class="btn-secondary"
+                            groups="powerbi_connector.group_powerbi_manager"/>
+                    <field name="connection_state" widget="statusbar" statusbar_visible="not_tested,success,failed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_logs" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="sync_log_count" widget="statinfo" string="Sync Logs"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Main Power BI"/></h1>
+                    </div>
+                    <group>
+                        <group string="Status">
+                            <field name="last_sync_status" widget="badge"
+                                   decoration-success="last_sync_status == 'success'"
+                                   decoration-warning="last_sync_status == 'partial'"
+                                   decoration-danger="last_sync_status == 'failed'"/>
+                            <field name="last_sync_sales_datetime"/>
+                            <field name="last_sync_expenses_datetime"/>
+                            <field name="last_cron_run_datetime"/>
+                        </group>
+                        <group string="General">
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="sync_all_companies"/>
+                        </group>
+                    </group>
+                    <field name="last_sync_message" readonly="1" invisible="not last_sync_message"
+                           class="text-muted"/>
+
+                    <notebook>
+                        <page string="Connection">
+                            <group>
+                                <group string="Microsoft Entra ID">
+                                    <field name="tenant_id"/>
+                                    <field name="client_id"/>
+                                    <field name="client_secret" password="True"/>
+                                    <field name="authentication_type"/>
+                                </group>
+                                <group string="Power BI">
+                                    <field name="workspace_id"/>
+                                    <field name="dataset_name"/>
+                                    <field name="dataset_id"/>
+                                    <field name="api_base_url"/>
+                                    <field name="auth_base_url"/>
+                                </group>
+                            </group>
+                            <field name="last_test_result" readonly="1" invisible="not last_test_result"
+                                   widget="text"/>
+                        </page>
+                        <page string="Synchronization Settings">
+                            <group>
+                                <group string="Data to Synchronize">
+                                    <field name="sync_sales"/>
+                                    <field name="sync_sales_lines" invisible="not sync_sales"/>
+                                    <field name="sync_expenses"/>
+                                </group>
+                                <group string="Automation">
+                                    <field name="sync_frequency"/>
+                                    <field name="batch_size"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Sync Logs">
+                            <field name="sync_log_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="sync_type"/>
+                                    <field name="data_type"/>
+                                    <field name="start_datetime"/>
+                                    <field name="duration"/>
+                                    <field name="records_processed"/>
+                                    <field name="status" widget="badge"
+                                           decoration-success="status == 'success'"
+                                           decoration-warning="status == 'partial'"
+                                           decoration-danger="status == 'failed'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_powerbi_config" model="ir.actions.act_window">
+        <field name="name">Power BI Connections</field>
+        <field name="res_model">powerbi.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

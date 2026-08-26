@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_powerbi_sync_wizard_form" model="ir.ui.view">
+        <field name="name">powerbi.sync.wizard.form</field>
+        <field name="model">powerbi.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Synchronize with Power BI">
+                <field name="config_id" invisible="1"/>
+                <group>
+                    <group string="Data">
+                        <field name="sync_sales"/>
+                        <field name="sync_expenses"/>
+                    </group>
+                    <group string="Mode">
+                        <field name="mode" widget="radio"/>
+                    </group>
+                </group>
+                <group string="Date Filter (optional)">
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <div class="alert alert-warning" role="alert" invisible="not show_full_sync_warning">
+                    Full synchronization clears each Power BI table and reloads it from Odoo.
+                    This may take longer and transmits a large number of records to Power BI.
+                    Continue?
+                </div>
+                <footer>
+                    <button name="action_synchronize" type="object" string="Synchronize"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
