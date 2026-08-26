@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_powerbi_config_manager,powerbi.config.manager,model_powerbi_config,group_powerbi_manager,1,1,1,1
+access_powerbi_config_user,powerbi.config.user,model_powerbi_config,group_powerbi_user,1,0,0,0
+access_powerbi_sync_log_manager,powerbi.sync.log.manager,model_powerbi_sync_log,group_powerbi_manager,1,1,1,1
+access_powerbi_sync_log_user,powerbi.sync.log.user,model_powerbi_sync_log,group_powerbi_user,1,0,0,0
+access_powerbi_sync_wizard_manager,powerbi.sync.wizard.manager,model_powerbi_sync_wizard,group_powerbi_manager,1,1,1,1

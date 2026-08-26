@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_powerbi" model="ir.module.category">
+        <field name="name">Power BI</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="privilege_powerbi" model="res.groups.privilege">
+        <field name="name">Power BI Access</field>
+        <field name="category_id" ref="module_category_powerbi"/>
+    </record>
+
+    <record id="group_powerbi_user" model="res.groups">
+        <field name="name">Power BI User</field>
+        <field name="privilege_id" ref="privilege_powerbi"/>
+        <field name="comment">Can view Power BI connection status and synchronization logs.</field>
+    </record>
+
+    <record id="group_powerbi_manager" model="res.groups">
+        <field name="name">Power BI Administrator</field>
+        <field name="privilege_id" ref="privilege_powerbi"/>
+        <field name="implied_ids" eval="[(4, ref('group_powerbi_user'))]"/>
+        <field name="comment">Can configure Power BI connections (including secrets), test
+            connections, and trigger Full Synchronization.</field>
+    </record>
+
+    <record id="rule_powerbi_config_multi_company" model="ir.rule">
+        <field name="name">Power BI Connection: multi-company</field>
+        <field name="model_id" ref="model_powerbi_config"/>
+        <field name="domain_force">['|', ('sync_all_companies', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="rule_powerbi_sync_log_multi_company" model="ir.rule">
+        <field name="name">Power BI Sync Log: multi-company</field>
+        <field name="model_id" ref="model_powerbi_sync_log"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_powerbi_sync_log" model="ir.sequence">
+        <field name="name">Power BI Sync Log</field>
+        <field name="code">powerbi.sync.log</field>
+        <field name="prefix">PBI-SYNC-</field>
+        <field name="padding">5</field>
+    </record>
+</odoo>
