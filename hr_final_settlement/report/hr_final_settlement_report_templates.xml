@@ -73,7 +73,10 @@
                         <p class="fs_p">
                             This Statement is made between: Party One (Employer) — <span t-field="company.name"/>
                             <t t-if="company.fs_employer_cr_number">, CR No. <span t-field="company.fs_employer_cr_number"/></t>,
-                            represented by ______________________ (name &amp; title); and Party Two (Employee) — as identified below.
+                            represented by
+                            <span t-field="o.prepared_by.name" t-if="o.prepared_by"/><t t-if="o.prepared_by.employee_id.job_title">, <span t-field="o.prepared_by.employee_id.job_title"/></t>
+<!--                            <t t-if="not o.prepared_by">______________________ (name &amp; title)</t>-->
+                            ; and Party Two (Employee) — as identified below.
                         </p>
 
                         <h3 class="fs_section">2. Employee &amp; Employment Information</h3>
@@ -175,7 +178,7 @@
                                     <td>GOSI / SIO employee contribution</td>
                                     <td><span t-field="o.sio_percentage"/>% of final month's salary only</td>
                                     <td class="fs_amount">
-                                        (<span t-field="o.sio_deduction" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>)
+                                        <span t-field="o.sio_deduction" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                                     </td>
                                 </tr>
                                 <t t-set="fs_other_ded_lines" t-value="o.line_ids.filtered(lambda l: l.line_type == 'deduction' and l.category != 'sio')"/>

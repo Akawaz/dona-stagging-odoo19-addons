@@ -2,6 +2,23 @@
 <odoo>
     <data>
 
+        <!-- Normal Word-style A4 margins (1 inch / 25.4mm on all sides), scoped to
+             just this report. header_spacing is trimmed from Odoo's 35mm default
+             since it stacks on top of margin_top for the running header (logo +
+             company line) - left at 35 it would make the effective top margin
+             ~60mm instead of a clean 1 inch. -->
+        <record id="paperformat_final_settlement" model="report.paperformat">
+            <field name="name">Final Settlement (A4, Normal Margins)</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">25.4</field>
+            <field name="margin_bottom">25.4</field>
+            <field name="margin_left">25.4</field>
+            <field name="margin_right">25.4</field>
+            <field name="header_spacing">9</field>
+            <field name="dpi">90</field>
+        </record>
+
         <record id="action_report_hr_final_settlement" model="ir.actions.report">
             <field name="name">Final Settlement &amp; Mutual Release Statement</field>
             <field name="model">hr.final.settlement</field>
@@ -11,6 +28,7 @@
             <field name="print_report_name">'Final Settlement - %s' % (object.employee_id.name)</field>
             <field name="binding_model_id" ref="model_hr_final_settlement"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="paperformat_final_settlement"/>
         </record>
 
     </data>

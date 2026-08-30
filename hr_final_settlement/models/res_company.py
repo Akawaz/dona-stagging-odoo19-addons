@@ -11,9 +11,11 @@ class ResCompany(models.Model):
              "on the Final Settlement report.")
 
     fs_require_settlement_before_archive = fields.Boolean(
-        string="Require Final Settlement Before Archive",
-        help="If enabled, an employee cannot be archived until a Final "
-             "Settlement for that employee has reached the Finalized state.")
+        string="Require Final Settlement Before Archive", default=True,
+        help="If enabled (default), an employee cannot be archived until a Final "
+             "Settlement record exists for them (any state other than Cancelled - "
+             "it does not need to be Finalized first). Disable to restore plain "
+             "Odoo archiving with no Final Settlement requirement.")
 
     fs_settlement_structure_id = fields.Many2one(
         'hr.payroll.structure', string="Final Settlement Salary Structure",

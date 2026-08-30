@@ -63,6 +63,7 @@
                                 <field name="department_id" readonly="1"/>
                                 <field name="job_id" readonly="1"/>
                                 <field name="manager_id" readonly="1"/>
+                                <field name="work_location_id" readonly="1"/>
                             </group>
                             <group>
                                 <field name="settlement_date"/>
@@ -88,7 +89,7 @@
                                     </group>
                                 </group>
                                 <group string="Departure Details">
-                                    <field name="departure_description" nolabel="1"/>
+                                    <field name="departure_description" nolabel="1" colspan="2"/>
                                 </group>
                             </page>
                             <page string="Salary" name="salary">
@@ -141,7 +142,8 @@
                                         <field name="category"/>
                                         <field name="quantity"/>
                                         <field name="rate"/>
-                                        <field name="calculated_amount" readonly="1"/>
+                                        <field name="calculated_amount" readonly="is_system_line"
+                                               string="Amount"/>
                                         <field name="is_manual_override"/>
                                         <field name="override_amount" invisible="not is_manual_override"/>
                                         <field name="override_reason" invisible="not is_manual_override"/>
@@ -182,6 +184,7 @@
                             </page>
                             <page string="Payment" name="payment">
                                 <group>
+                                    <field name="employee_bank_account_id" readonly="1"/>
                                     <field name="payment_method"/>
                                     <field name="bank_name_account" invisible="payment_method != 'bank_transfer'"/>
                                     <field name="cheque_number" invisible="payment_method != 'cheque'"/>

@@ -38,6 +38,11 @@ class HrFinalSettlement(models.Model):
     department_id = fields.Many2one('hr.department', string="Department")
     job_id = fields.Many2one('hr.job', string="Job Position")
     manager_id = fields.Many2one('hr.employee', string="Manager")
+    work_location_id = fields.Many2one(
+        'hr.work.location', string="Work Location",
+        related='employee_id.work_location_id', store=True, readonly=True,
+        help="Always follows the employee's current work location - not a snapshot, "
+             "since it isn't a financial figure that needs historical protection.")
 
     employment_start_date = fields.Date(string="Employment Start Date")
     contract_start_date = fields.Date(string="Contract Start Date")
@@ -119,13 +124,23 @@ class HrFinalSettlement(models.Model):
     payslip_state = fields.Selection(related='payslip_id.state', string="Payslip Status")
 
     # ---- Payment Details ------------------------------------------------------
+    employee_bank_account_id = fields.Many2one(
+        'res.partner.bank', string="Employee Bank Account",
+        related='employee_id.primary_bank_account_id', readonly=True,
+        help="The employee's own primary bank account on file, shown for reference. "
+             "Always follows the current employee - not what payment was actually made to.")
     payment_method = fields.Selection([
         ('bank_transfer', 'Bank Transfer'),
         ('cheque', 'Cheque'),
         ('cash', 'Cash'),
         ('other', 'Other'),
     ], string="Payment Method")
-    bank_name_account = fields.Char(string="Bank Name & Account No")
+    bank_name_account = fields.Char(
+        string="Bank Name & Account No",
+        help="The account payment was actually/will actually be made to for this "
+             "settlement - auto-suggested from the employee's bank account when "
+             "Payment Method is set to Bank Transfer, but editable in case a "
+             "different account is used for this specific payment.")
     cheque_number = fields.Char(string="Cheque No.")
     payment_date = fields.Date(string="Date of Payment")
 
@@ -215,6 +230,19 @@ class HrFinalSettlement(models.Model):
             if not record.departure_reason_id:
                 record.departure_reason_id = employee.departure_reason_id
 
+    @api.onchange('payment_method', 'employee_id')
+    def _onchange_payment_method(self):
+        """Auto-fill the bank account from the employee's own primary bank
+        account (same relationship Odoo payroll payments already use) when
+        Bank Transfer is selected. Never overwrites a value HR already
+        entered manually, and does nothing if the employee has no bank
+        account on file."""
+        for record in self:
+            if record.payment_method == 'bank_transfer' and not record.bank_name_account:
+                bank = record.employee_id.primary_bank_account_id
+                if bank:
+                    record.bank_name_account = bank.display_name
+
     # =========================================================================
     # Computed fields
     # =========================================================================
@@ -234,8 +262,12 @@ class HrFinalSettlement(models.Model):
             earnings = lines.filtered(lambda l: l.line_type == 'earning')
             deductions = lines.filtered(lambda l: l.line_type == 'deduction')
             record.total_earnings = sum(earnings.mapped('amount'))
+            # Deduction line amounts are already negative (see
+            # hr.final.settlement.line._compute_amount), so this is a
+            # straight sum/addition, never a subtraction - that's what
+            # rules out double-counting the deduction.
             record.total_deductions = sum(deductions.mapped('amount'))
-            record.net_settlement = record.total_earnings - record.total_deductions
+            record.net_settlement = record.total_earnings + record.total_deductions
             record.leave_encashment_amount = sum(
                 lines.filtered(lambda l: l.category == 'annual_leave').mapped('amount'))
             record.sio_deduction = sum(

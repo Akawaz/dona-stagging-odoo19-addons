@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date
 
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.tests import TransactionCase, tagged
 
 
@@ -101,13 +101,43 @@ class TestHrFinalSettlement(TransactionCase):
         expected_leave_encashment = round(30.0 * settlement.daily_rate, 2)
         self.assertAlmostEqual(settlement.leave_encashment_amount, expected_leave_encashment, places=2)
 
+        # Deduction amounts are stored/displayed negative (SIO, loans, etc.)
+        # so totals are a straight sum, never a subtraction.
         expected_sio = settlement.final_salary_amount * 0.08
-        self.assertAlmostEqual(settlement.sio_deduction, expected_sio, places=2)
+        self.assertAlmostEqual(settlement.sio_deduction, -expected_sio, places=2)
 
         expected_earnings = settlement.final_salary_amount + settlement.leave_encashment_amount
         self.assertAlmostEqual(settlement.total_earnings, expected_earnings, places=2)
-        self.assertAlmostEqual(settlement.total_deductions, expected_sio, places=2)
+        self.assertAlmostEqual(settlement.total_deductions, -expected_sio, places=2)
         self.assertAlmostEqual(settlement.net_settlement, expected_earnings - expected_sio, places=2)
+
+    def test_deduction_amounts_are_negative_and_net_is_correct(self):
+        """Scenario: Gross 1,000, one deduction entered as a positive 100 ->
+        must be stored/displayed as -100, and Net must be 900, not 1,100
+        (which is what you'd get from double-subtracting a negative)."""
+        settlement = self._new_settlement(date(2026, 8, 5))
+        settlement.action_calculate()
+        settlement.line_ids.filtered('is_system_line').unlink()
+        settlement.line_ids = [(0, 0, {
+            'name': 'Gross line', 'line_type': 'earning', 'category': 'other_earning',
+            'calculated_amount': 1000.0,
+        }), (0, 0, {
+            'name': 'Loan deduction', 'line_type': 'deduction', 'category': 'loan',
+            'calculated_amount': 100.0,  # entered positive on purpose
+        })]
+        loan_line = settlement.line_ids.filtered(lambda l: l.category == 'loan')
+        self.assertEqual(loan_line.amount, -100.0, "Deduction must be stored negative even if entered positive")
+        self.assertEqual(settlement.total_earnings, 1000.0)
+        self.assertEqual(settlement.total_deductions, -100.0)
+        self.assertEqual(settlement.net_settlement, 900.0)
+
+        # A second deduction, entered already-negative, must not be double-negated.
+        settlement.line_ids = [(0, 0, {
+            'name': 'Advance deduction', 'line_type': 'deduction', 'category': 'advance',
+            'calculated_amount': -50.0,
+        })]
+        self.assertEqual(settlement.total_deductions, -150.0)
+        self.assertEqual(settlement.net_settlement, 850.0)
 
     def test_zero_leave_balance_zero_encashment(self):
         # An employee with no allocation at all for the configured leave type
@@ -224,11 +254,37 @@ class TestHrFinalSettlement(TransactionCase):
         self.assertTrue(pdf_content)
         self.assertGreater(len(pdf_content), 1000)
 
-    def test_archive_gate(self):
+    def test_archive_gate_blocks_with_actionable_redirect(self):
         self.company.fs_require_settlement_before_archive = True
-        with self.assertRaises(UserError):
-            self.employee.action_archive()
+        employee = self.env['hr.employee'].create({'name': 'Archive Gate Employee', 'company_id': self.company.id})
+        with self.assertRaises(RedirectWarning) as cm:
+            employee.action_archive()
+        # The whole point is it's not a dead-end error: it must carry an
+        # action the user can click to go create the settlement.
+        action = cm.exception.args[1]
+        self.assertEqual(action['res_model'], 'hr.final.settlement')
+        self.assertEqual(action['context']['default_employee_id'], employee.id)
 
+    def test_archive_gate_allows_once_settlement_exists_even_if_not_finalized(self):
+        """A settlement only needs to EXIST (not be Finalized) to unblock
+        archiving - the workflow is meant to support "create it, archive
+        later once it's done", not force full completion up front."""
+        self.company.fs_require_settlement_before_archive = True
+        employee = self.env['hr.employee'].create({'name': 'Draft Settlement Employee', 'company_id': self.company.id})
+        self.env['hr.final.settlement'].create({
+            'employee_id': employee.id,
+            'last_working_date': date(2026, 8, 5),
+        })
+        employee.action_archive()
+        self.assertFalse(employee.active)
+
+    def test_archive_gate_disabled_restores_plain_odoo_behavior(self):
+        self.company.fs_require_settlement_before_archive = False
+        employee = self.env['hr.employee'].create({'name': 'No Gate Employee', 'company_id': self.company.id})
+        employee.action_archive()
+        self.assertFalse(employee.active)
+
+    def test_full_workflow_then_archive(self):
         settlement = self._new_settlement(date(2026, 8, 5))
         settlement.action_calculate()
         settlement.action_submit_review()
