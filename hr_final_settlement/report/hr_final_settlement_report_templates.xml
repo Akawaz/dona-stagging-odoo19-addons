@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            Visual/structural reference: "Final_Settlement_Mutual_Release_Template.docx".
+            This template reproduces that document's section order, numbering, wording,
+            table structure and header/footer as closely as reasonably possible. All
+            figures are read from already-computed hr.final.settlement fields - no
+            business calculation happens in this template. The accent color is
+            configurable per company (res.company.fs_report_brand_color) rather than
+            hard-coded, so it isn't tied to one company's branding.
+        -->
+        <template id="report_hr_final_settlement_document">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="company" t-value="o.company_id"/>
+                    <t t-set="brand" t-value="company.fs_report_brand_color or '#C0272D'"/>
+
+                    <div class="header" style="padding: 0 24px; font-size: 9px; color: #666;">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;"/>
+                        <div style="text-align: center; margin-top: 2px;">
+                            <span t-field="company.name"/>
+                            <t t-if="company.fs_employer_cr_number"> | CR No. <span t-field="company.fs_employer_cr_number"/></t>
+                            <t t-if="company.country_id"> | <span t-field="company.country_id.name"/></t>
+                        </div>
+                    </div>
+
+                    <div class="page fs_page" style="font-family: Arial, Helvetica, sans-serif; font-size: 11.5px; color: #222; line-height: 1.5;">
+
+                        <style>
+                            .fs_page h1.fs_company { text-align: center; font-size: 1.5em; font-weight: bold; margin: 0 0 2px 0; }
+                            .fs_page .fs_company_sub { text-align: center; font-size: 0.85em; color: #444; margin-bottom: 14px; }
+                            .fs_page h2.fs_title { text-align: center; font-size: 1.3em; font-weight: bold; margin: 0 0 2px 0; }
+                            .fs_page .fs_subtitle { text-align: center; font-style: italic; margin-bottom: 10px; }
+                            .fs_page .fs_refline { text-align: center; margin-bottom: 16px; }
+                            .fs_page h3.fs_section { font-size: 1.02em; font-weight: bold; margin: 16px 0 6px 0; }
+                            .fs_page p.fs_p { text-align: justify; margin: 0 0 8px 0; }
+                            .fs_page table.fs_grid { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+                            .fs_page table.fs_grid td { border: 1px solid #999; padding: 5px 8px; vertical-align: middle; }
+                            .fs_page table.fs_grid td.fs_key { font-weight: bold; color: #fff; width: 25%; }
+                            .fs_page table.fs_grid td.fs_val { width: 25%; }
+                            .fs_page table.fs_fin { width: 100%; border-collapse: collapse; margin: 6px 0 14px 0; }
+                            .fs_page table.fs_fin th, .fs_page table.fs_fin td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; }
+                            .fs_page table.fs_fin th { color: #fff; font-weight: bold; text-align: center; }
+                            .fs_page table.fs_fin td.fs_amount { text-align: right; white-space: nowrap; }
+                            .fs_page table.fs_fin tr.fs_gross td { font-weight: bold; border-top: 2px solid #333; }
+                            .fs_page table.fs_fin tr.fs_net td { color: #fff; font-weight: bold; font-size: 1.05em; }
+                            .fs_page table.fs_fin tr.fs_pending td { color: #777; font-style: italic; }
+                            .fs_page .fs_thanks { text-align: center; font-weight: bold; color: #555; margin-top: 16px; }
+                            .fs_page .fs_wish { text-align: center; font-style: italic; color: #555; margin-bottom: 4px; }
+                            .fs_page table.fs_sign { width: 100%; border-collapse: collapse; margin-top: 6px; page-break-inside: avoid; }
+                            .fs_page table.fs_sign th, .fs_page table.fs_sign td { border: 1px solid #999; padding: 8px; width: 50%; }
+                            .fs_page table.fs_sign th { color: #fff; text-align: left; }
+                        </style>
+
+                        <h1 class="fs_company"><span t-field="company.name"/></h1>
+                        <div class="fs_company_sub">
+                            <t t-if="company.fs_employer_cr_number">Commercial Registration No. <span t-field="company.fs_employer_cr_number"/></t>
+                            <t t-if="company.fs_employer_cr_number and company.country_id"> • </t>
+                            <span t-field="company.country_id.name" t-if="company.country_id"/>
+                        </div>
+
+                        <h2 class="fs_title">FINAL SETTLEMENT &amp; MUTUAL RELEASE STATEMENT</h2>
+                        <div class="fs_subtitle">Full and Final Settlement of End-of-Service Dues</div>
+                        <div class="fs_refline">
+                            <strong>Reference No.:</strong> <span t-field="o.name"/>
+                            &#160;&#160;&#160;&#160;
+                            <strong>Date Issued:</strong> <span t-field="o.settlement_date"/>
+                        </div>
+
+                        <h3 class="fs_section">1. Parties</h3>
+                        <p class="fs_p">
+                            This Statement is made between: Party One (Employer) — <span t-field="company.name"/>
+                            <t t-if="company.fs_employer_cr_number">, CR No. <span t-field="company.fs_employer_cr_number"/></t>,
+                            represented by ______________________ (name &amp; title); and Party Two (Employee) — as identified below.
+                        </p>
+
+                        <h3 class="fs_section">2. Employee &amp; Employment Information</h3>
+                        <table class="fs_grid">
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Employee Name</td>
+                                <td class="fs_val"><span t-field="o.employee_id.name"/></td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Employee ID</td>
+                                <td class="fs_val"><span t-field="o.employee_id.registration_number"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Department</td>
+                                <td class="fs_val"><span t-field="o.department_id.name"/></td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Position / Job Title</td>
+                                <td class="fs_val"><span t-field="o.job_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Nationality</td>
+                                <td class="fs_val"><span t-field="o.employee_id.country_id.name"/></td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Passport / CPR No.</td>
+                                <td class="fs_val">
+                                    <span t-field="o.employee_id.passport_id" t-if="o.employee_id.passport_id"/>
+                                    <span t-field="o.employee_id.identification_id" t-elif="o.employee_id.identification_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Date of Joining</td>
+                                <td class="fs_val"><span t-field="o.employment_start_date"/></td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Last Working Day</td>
+                                <td class="fs_val"><span t-field="o.last_working_date"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Total Length of Service</td>
+                                <td class="fs_val"><span t-field="o.service_duration_display"/></td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Reason for Leaving</td>
+                                <td class="fs_val"><span t-field="o.departure_reason_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Basic Monthly Salary (<span t-field="o.currency_id.name"/>)</td>
+                                <td class="fs_val">
+                                    <span t-field="o.basic_salary" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Notice Period Served</td>
+                                <td class="fs_val"><span t-field="o.notice_period_served"/></td>
+                            </tr>
+                        </table>
+
+                        <h3 class="fs_section">3. Final Settlement Breakdown</h3>
+                        <table class="fs_fin">
+                            <thead>
+                                <tr>
+                                    <th t-attf-style="background-color: #{brand};" style="width: 32%;">Item</th>
+                                    <th t-attf-style="background-color: #{brand};" style="width: 46%;">Basis of Calculation</th>
+                                    <th t-attf-style="background-color: #{brand};" style="width: 22%;">Amount (<span t-field="o.currency_id.name"/>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Final month's salary</td>
+                                    <td><span t-field="o.final_salary_basis_display"/></td>
+                                    <td class="fs_amount">
+                                        <span t-field="o.final_salary_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Remaining annual leave balance</td>
+                                    <td>
+                                        Entitlement <span t-field="o.annual_leave_entitlement"/> days − Used
+                                        <span t-field="o.annual_leave_used"/> days = Balance <span t-field="o.annual_leave_balance"/> days
+                                        × Daily Rate <span t-field="o.daily_rate" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                    <td class="fs_amount">
+                                        <span t-field="o.leave_encashment_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                                <tr class="fs_pending">
+                                    <td>Indemnity / gratuity (if applicable)</td>
+                                    <td>
+                                        Not yet enabled for this settlement — requires a confirmed gratuity
+                                        formula per Bahrain Labour Law 36/2012 before it can be calculated.
+                                    </td>
+                                    <td class="fs_amount">—</td>
+                                </tr>
+                                <t t-set="fs_other_earning_lines" t-value="o.line_ids.filtered(lambda l: l.line_type == 'earning' and l.category not in ('final_salary', 'annual_leave'))"/>
+                                <tr>
+                                    <td>Other dues (overtime, unpaid allowances, etc.)</td>
+                                    <td><span t-esc="', '.join(fs_other_earning_lines.mapped('name'))"/></td>
+                                    <td class="fs_amount">
+                                        <span t-field="o.other_earnings_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                                <tr class="fs_gross">
+                                    <td colspan="2">Gross amount due (before deductions)</td>
+                                    <td class="fs_amount">
+                                        <span t-field="o.total_earnings" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.sio_enabled and o.sio_deduction">
+                                    <td>GOSI / SIO employee contribution</td>
+                                    <td><span t-field="o.sio_percentage"/>% of final month's salary only</td>
+                                    <td class="fs_amount">
+                                        (<span t-field="o.sio_deduction" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>)
+                                    </td>
+                                </tr>
+                                <t t-set="fs_other_ded_lines" t-value="o.line_ids.filtered(lambda l: l.line_type == 'deduction' and l.category != 'sio')"/>
+                                <tr>
+                                    <td>Other deductions (loans, advances, unreturned assets)</td>
+                                    <td><span t-esc="', '.join(fs_other_ded_lines.mapped('name'))"/></td>
+                                    <td class="fs_amount">
+                                        <span t-field="o.other_deductions_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                                <tr class="fs_net">
+                                    <td colspan="2" t-attf-style="background-color: #{brand};">Net amount payable</td>
+                                    <td class="fs_amount" t-attf-style="background-color: #{brand};">
+                                        <span t-field="o.net_settlement" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 class="fs_section">4. Mutual Release and Discharge</h3>
+                        <div t-if="company.fs_report_release_text" t-field="company.fs_report_release_text"/>
+                        <p class="fs_p" t-else="">
+                            Party Two acknowledges receipt in full of the Net Amount Payable stated above
+                            (<span t-field="o.net_settlement" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>)
+                            and confirms this settles every financial entitlement arising from the employment
+                            relationship — including salary, allowances, leave, overtime, indemnity, and any
+                            other benefit — whether arising from the employment contract or Bahrain Labour Law
+                            No. 36 of 2012. Party Two releases Party One from any further claim of any kind or
+                            cause relating to that relationship.
+                        </p>
+
+                        <h3 class="fs_section">5. Return of Company Property</h3>
+                        <div t-if="company.fs_report_property_return_text" t-field="company.fs_report_property_return_text"/>
+                        <p class="fs_p" t-else="">
+                            Party One confirms receipt from Party Two of all company property, files,
+                            equipment, access devices, and data, returned complete and in good order,
+                            including but not limited to: laptop/POS devices, uniform, keys/access cards,
+                            company phone or SIM, and any digital or physical business records.
+                        </p>
+
+                        <h3 class="fs_section">6. Continuing Obligations</h3>
+                        <div t-if="company.fs_report_continuing_obligations_text" t-field="company.fs_report_continuing_obligations_text"/>
+                        <p class="fs_p" t-else="">
+                            The confidentiality, non-competition, and non-disparagement provisions of the
+                            employee's original employment contract remain in force according to their terms
+                            and for the periods specified therein, and survive the termination of employment.
+                        </p>
+
+                        <h3 class="fs_section">7. Governing Law</h3>
+                        <div t-if="company.fs_report_governing_law_text" t-field="company.fs_report_governing_law_text"/>
+                        <p class="fs_p" t-else="">
+                            This Statement is governed by and construed in accordance with the private-sector
+                            Labour Law of the Kingdom of Bahrain, issued by Decree-Law No. 36 of 2012.
+                        </p>
+
+                        <h3 class="fs_section">8. Payment Details</h3>
+                        <table class="fs_grid" style="width: 65%;">
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand}; width: 45%;">Payment Method</td>
+                                <td class="fs_val" style="width: 55%;"><span t-field="o.payment_method"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Bank Name &amp; Account No.</td>
+                                <td class="fs_val"><span t-field="o.bank_name_account"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Cheque No. (if applicable)</td>
+                                <td class="fs_val"><span t-field="o.cheque_number"/></td>
+                            </tr>
+                            <tr>
+                                <td class="fs_key" t-attf-style="background-color: #{brand};">Date of Payment</td>
+                                <td class="fs_val"><span t-field="o.payment_date"/></td>
+                            </tr>
+                        </table>
+
+                        <div class="fs_thanks">With sincere thanks for your contribution to <span t-field="company.name"/> —</div>
+                        <div class="fs_wish">we wish you success, growth, and happiness ahead.</div>
+
+                        <h3 class="fs_section">9. Signatures</h3>
+                        <table class="fs_sign">
+                            <thead>
+                                <tr>
+                                    <th t-attf-style="background-color: #{brand};">Employee (Party Two)</th>
+                                    <th t-attf-style="background-color: #{brand};"><span t-field="company.name"/> (Party One)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Name: ______________________________</td>
+                                    <td>Name: ______________________________</td>
+                                </tr>
+                                <tr>
+                                    <td>Signature: ___________________________</td>
+                                    <td>Signature / Title: ____________________</td>
+                                </tr>
+                                <tr>
+                                    <td>Date: _______________________________</td>
+                                    <td>Date: _______________________________</td>
+                                </tr>
+                                <tr>
+                                    <td>Witness Name &amp; Signature: ______________</td>
+                                    <td>Witness Name &amp; Signature: ______________</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="footer" style="text-align: center; font-size: 8.5px; color: #888;">
+                        <div>This document is a business record generated by the company's HR system — have it reviewed by qualified local legal counsel before relying on it.</div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

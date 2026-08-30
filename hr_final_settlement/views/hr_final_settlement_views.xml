@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hr_final_settlement_form" model="ir.ui.view">
+            <field name="name">hr.final.settlement.form</field>
+            <field name="model">hr.final.settlement</field>
+            <field name="arch" type="xml">
+                <form string="Final Settlement">
+                    <header>
+                        <button name="action_calculate" string="Calculate" type="object"
+                                class="oe_highlight" invisible="state != 'draft'"/>
+                        <button name="action_recalculate" string="Recalculate" type="object"
+                                invisible="state not in ('calculated', 'hr_review')"/>
+                        <button name="action_submit_review" string="Submit for Review" type="object"
+                                class="oe_highlight" invisible="state != 'calculated'"/>
+                        <button name="action_approve" string="Approve" type="object"
+                                class="oe_highlight" invisible="state != 'hr_review'"
+                                groups="hr_final_settlement.group_hr_final_settlement_manager"/>
+                        <button name="action_create_payslip" string="Create Final Settlement Payslip" type="object"
+                                class="oe_highlight" invisible="state != 'approved' or payslip_id"
+                                groups="hr_final_settlement.group_hr_final_settlement_manager"/>
+                        <button name="action_view_payslip" string="View Payslip" type="object"
+                                invisible="not payslip_id"/>
+                        <button name="action_finalize" string="Finalize" type="object"
+                                class="oe_highlight" invisible="state != 'payslip_created'"
+                                groups="hr_final_settlement.group_hr_final_settlement_manager"/>
+                        <button name="action_archive_employee" string="Archive Employee" type="object"
+                                invisible="state != 'finalized'"/>
+                        <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                                invisible="state not in ('draft', 'calculated', 'hr_review')"/>
+                        <button name="action_reopen" string="Reopen" type="object"
+                                invisible="state not in ('approved', 'payslip_created', 'finalized')"
+                                groups="hr_final_settlement.group_hr_final_settlement_manager"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="state in ('finalized', 'cancelled')"
+                                confirm="Are you sure you want to cancel this Final Settlement?"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,calculated,hr_review,approved,payslip_created,finalized"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_payslip" type="object" class="oe_stat_button" icon="fa-money"
+                                    invisible="not payslip_id">
+                                <field name="payslip_state" widget="statinfo" string="Payslip"/>
+                            </button>
+                            <button name="action_view_leave_records" type="object" class="oe_stat_button" icon="fa-calendar">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Leave Records</span>
+                                </div>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" title="Finalized" bg_color="text-bg-success" invisible="state != 'finalized'"/>
+                        <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger" invisible="state != 'cancelled'"/>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" readonly="state != 'draft'"
+                                       options="{'no_create': True}" context="{'active_test': False}"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="department_id" readonly="1"/>
+                                <field name="job_id" readonly="1"/>
+                                <field name="manager_id" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="settlement_date"/>
+                                <field name="last_working_date" readonly="state == 'finalized'"/>
+                                <field name="departure_reason_id"/>
+                                <field name="version_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Service Information" name="service">
+                                <group>
+                                    <group>
+                                        <field name="employment_start_date"/>
+                                        <field name="contract_start_date"/>
+                                        <field name="contract_end_date"/>
+                                    </group>
+                                    <group>
+                                        <field name="service_years"/>
+                                        <field name="service_months"/>
+                                        <field name="service_days"/>
+                                        <field name="service_duration_display"/>
+                                        <field name="notice_period_served"/>
+                                    </group>
+                                </group>
+                                <group string="Departure Details">
+                                    <field name="departure_description" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Salary" name="salary">
+                                <group>
+                                    <group string="Salary Components (Snapshot)">
+                                        <field name="basic_salary" readonly="state == 'finalized'"/>
+                                        <field name="transportation_allowance" readonly="state == 'finalized'"/>
+                                        <field name="housing_allowance" readonly="state == 'finalized'"/>
+                                        <field name="other_allowance" readonly="state == 'finalized'"/>
+                                        <field name="monthly_salary"/>
+                                    </group>
+                                    <group string="Final Month Salary">
+                                        <field name="final_month_calendar_days"/>
+                                        <field name="final_month_worked_days"/>
+                                        <field name="final_salary_basis_display"/>
+                                        <field name="final_salary_amount"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Daily Rate">
+                                        <field name="daily_rate_method"/>
+                                        <field name="daily_rate_basis_display"/>
+                                        <field name="daily_rate"/>
+                                    </group>
+                                    <group string="Final Settlement Payroll">
+                                        <field name="final_settlement_structure_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Annual Leave" name="leave">
+                                <group>
+                                    <group>
+                                        <field name="annual_leave_type_id" readonly="state == 'finalized'"/>
+                                        <field name="leave_calculation_method"/>
+                                    </group>
+                                    <group>
+                                        <field name="annual_leave_entitlement"/>
+                                        <field name="annual_leave_used"/>
+                                        <field name="annual_leave_balance"/>
+                                        <field name="leave_encashment_amount"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Settlement" name="settlement">
+                                <field name="line_ids" readonly="state == 'finalized'">
+                                    <list editable="bottom" decoration-muted="is_system_line">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="line_type"/>
+                                        <field name="category"/>
+                                        <field name="quantity"/>
+                                        <field name="rate"/>
+                                        <field name="calculated_amount" readonly="1"/>
+                                        <field name="is_manual_override"/>
+                                        <field name="override_amount" invisible="not is_manual_override"/>
+                                        <field name="override_reason" invisible="not is_manual_override"/>
+                                        <field name="amount" readonly="1" sum="Total"/>
+                                        <field name="is_system_line" column_invisible="1"/>
+                                    </list>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_earnings"/>
+                                    <field name="total_deductions"/>
+                                    <field name="net_settlement" class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                            <page string="Payslip" name="payslip">
+                                <group>
+                                    <field name="payslip_id" readonly="1"/>
+                                    <field name="payslip_state" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Clearance" name="clearance">
+                                <group>
+                                    <group string="Employee">
+                                        <field name="employee_acknowledged"/>
+                                        <field name="employee_acknowledgment_date"/>
+                                    </group>
+                                    <group string="Employer">
+                                        <field name="employer_cleared"/>
+                                        <field name="employer_clearance_date"/>
+                                        <field name="authorized_representative_id"/>
+                                    </group>
+                                </group>
+                                <group string="Clearance Checklist">
+                                    <field name="clearance_property_returned"/>
+                                    <field name="clearance_equipment_returned"/>
+                                    <field name="clearance_files_returned"/>
+                                    <field name="clearance_data_returned"/>
+                                </group>
+                            </page>
+                            <page string="Payment" name="payment">
+                                <group>
+                                    <field name="payment_method"/>
+                                    <field name="bank_name_account" invisible="payment_method != 'bank_transfer'"/>
+                                    <field name="cheque_number" invisible="payment_method != 'cheque'"/>
+                                    <field name="payment_date"/>
+                                </group>
+                            </page>
+                            <page string="Notes" name="notes">
+                                <group>
+                                    <field name="prepared_by" readonly="1"/>
+                                    <field name="reviewed_by" readonly="1"/>
+                                    <field name="approved_by" readonly="1"/>
+                                </group>
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_final_settlement_list" model="ir.ui.view">
+            <field name="name">hr.final.settlement.list</field>
+            <field name="model">hr.final.settlement</field>
+            <field name="arch" type="xml">
+                <list string="Final Settlements" decoration-success="state == 'finalized'" decoration-muted="state == 'cancelled'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="last_working_date"/>
+                    <field name="departure_reason_id"/>
+                    <field name="net_settlement" sum="Total"/>
+                    <field name="state" widget="badge"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_hr_final_settlement_search" model="ir.ui.view">
+            <field name="name">hr.final.settlement.search</field>
+            <field name="model">hr.final.settlement</field>
+            <field name="arch" type="xml">
+                <search string="Final Settlements">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="departure_reason_id"/>
+                    <filter string="In Progress" name="in_progress"
+                            domain="[('state', 'not in', ('finalized', 'cancelled'))]"/>
+                    <filter string="Finalized" name="finalized" domain="[('state', '=', 'finalized')]"/>
+                    <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <separator/>
+                    <group>
+                        <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                        <filter string="Departure Reason" name="group_reason" context="{'group_by': 'departure_reason_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hr_final_settlement" model="ir.actions.act_window">
+            <field name="name">Final Settlements</field>
+            <field name="res_model">hr.final.settlement</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hr_final_settlement_search"/>
+            <field name="context">{'search_default_in_progress': 1}</field>
+        </record>
+
+    </data>
+</odoo>

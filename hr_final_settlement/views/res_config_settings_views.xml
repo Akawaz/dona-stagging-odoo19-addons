@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form_inherit_final_settlement" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.final.settlement</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='hr_payroll_settings']" position="after">
+                    <block title="Final Settlement" id="hr_final_settlement_settings">
+                        <setting string="Employer CR / Registration Number" id="fs_cr_number">
+                            <field name="fs_employer_cr_number"/>
+                        </setting>
+                        <setting string="Require Final Settlement Before Archive" id="fs_require_settlement"
+                                 help="Block archiving an employee until their Final Settlement is Finalized.">
+                            <field name="fs_require_settlement_before_archive"/>
+                        </setting>
+                        <setting string="Final Settlement Salary Structure" id="fs_structure">
+                            <field name="fs_settlement_structure_id"/>
+                        </setting>
+                        <setting string="Annual Leave Time Off Type" id="fs_leave_type">
+                            <field name="fs_annual_leave_type_id"/>
+                        </setting>
+                        <setting string="Annual Leave Calculation Method" id="fs_leave_method">
+                            <field name="fs_leave_calculation_method"/>
+                        </setting>
+                        <setting string="Daily Rate Calculation Basis" id="fs_daily_rate">
+                            <field name="fs_daily_rate_method"/>
+                            <span>Divisor:</span> <field name="fs_daily_rate_divisor" class="w-25"/>
+                        </setting>
+                        <setting string="GOSI / SIO Employee Contribution" id="fs_sio">
+                            <field name="fs_sio_enabled"/>
+                            <div invisible="not fs_sio_enabled">
+                                <span>Percentage:</span> <field name="fs_sio_percentage" class="w-25"/>
+                            </div>
+                        </setting>
+                        <setting string="Settlement Authorized Representative" id="fs_representative">
+                            <field name="fs_authorized_representative_id"/>
+                        </setting>
+                        <setting string="Report Brand Color" id="fs_brand_color"
+                                 help="Accent color used for headings and table headers on the printed Final Settlement report.">
+                            <field name="fs_report_brand_color"/>
+                        </setting>
+                        <setting string="Mutual Release Text" id="fs_release_text"
+                                 help="Leave empty to use the built-in default wording.">
+                            <field name="fs_report_release_text"/>
+                        </setting>
+                        <setting string="Return of Company Property Text" id="fs_property_text"
+                                 help="Leave empty to use the built-in default wording.">
+                            <field name="fs_report_property_return_text"/>
+                        </setting>
+                        <setting string="Continuing Obligations Text" id="fs_continuing_text"
+                                 help="Leave empty to use the built-in default wording.">
+                            <field name="fs_report_continuing_obligations_text"/>
+                        </setting>
+                        <setting string="Governing Law Text" id="fs_governing_law_text"
+                                 help="Leave empty to use the built-in default wording.">
+                            <field name="fs_report_governing_law_text"/>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

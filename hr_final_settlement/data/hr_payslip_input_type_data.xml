@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="input_type_final_salary" model="hr.payslip.input.type">
+            <field name="name">Final Month Salary</field>
+            <field name="code">FINAL_SALARY</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="input_type_final_leave" model="hr.payslip.input.type">
+            <field name="name">Annual Leave Encashment</field>
+            <field name="code">FINAL_LEAVE</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="input_type_final_other" model="hr.payslip.input.type">
+            <field name="name">Final Settlement - Other Earnings</field>
+            <field name="code">FINAL_OTHER</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="input_type_final_sio" model="hr.payslip.input.type">
+            <field name="name">Social Insurance Organization Deduction</field>
+            <field name="code">FINAL_SIO</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="input_type_final_deduction" model="hr.payslip.input.type">
+            <field name="name">Final Settlement - Other Deductions</field>
+            <field name="code">FINAL_DEDUCTION</field>
+            <field name="country_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

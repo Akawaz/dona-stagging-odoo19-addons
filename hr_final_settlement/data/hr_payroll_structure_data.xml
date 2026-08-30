@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="structure_final_settlement" model="hr.payroll.structure">
+            <field name="name">Final Settlement</field>
+            <field name="type_id" ref="structure_type_final_settlement"/>
+            <field name="use_worked_day_lines" eval="False"/>
+            <field name="payslip_name">Final Settlement Payslip</field>
+            <field name="input_line_type_ids" eval="[(6, 0, [
+                ref('input_type_final_salary'),
+                ref('input_type_final_leave'),
+                ref('input_type_final_other'),
+                ref('input_type_final_sio'),
+                ref('input_type_final_deduction'),
+            ])]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_departure_wizard_view_form_inherit_final_settlement" model="ir.ui.view">
+            <field name="name">hr.departure.wizard.form.inherit.final.settlement</field>
+            <field name="model">hr.departure.wizard</field>
+            <field name="inherit_id" ref="hr.hr_departure_wizard_view_form"/>
+            <field name="arch" type="xml">
+                <button name="action_register_departure" position="before">
+                    <button name="action_go_to_final_settlement" string="Go to Final Settlement"
+                            type="object" class="btn-primary" data-hotkey="v"/>
+                </button>
+            </field>
+        </record>
+
+    </data>
+</odoo>

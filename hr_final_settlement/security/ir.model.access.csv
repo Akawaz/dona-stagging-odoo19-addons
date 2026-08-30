@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_final_settlement_user,hr.final.settlement.user,model_hr_final_settlement,group_hr_final_settlement_user,1,1,1,0
+access_hr_final_settlement_manager,hr.final.settlement.manager,model_hr_final_settlement,group_hr_final_settlement_manager,1,1,1,1
+access_hr_final_settlement_line_user,hr.final.settlement.line.user,model_hr_final_settlement_line,group_hr_final_settlement_user,1,1,1,0
+access_hr_final_settlement_line_manager,hr.final.settlement.line.manager,model_hr_final_settlement_line,group_hr_final_settlement_manager,1,1,1,1

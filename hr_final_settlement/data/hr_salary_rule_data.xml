@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="rule_final_salary" model="hr.salary.rule">
+            <field name="name">Final Month Salary</field>
+            <field name="code">FINAL_SALARY</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_salary"/>
+            <field name="sequence" eval="10"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">input</field>
+            <field name="amount_other_input_id" ref="input_type_final_salary"/>
+        </record>
+
+        <record id="rule_final_leave" model="hr.salary.rule">
+            <field name="name">Annual Leave Encashment</field>
+            <field name="code">FINAL_LEAVE</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_leave"/>
+            <field name="sequence" eval="20"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">input</field>
+            <field name="amount_other_input_id" ref="input_type_final_leave"/>
+        </record>
+
+        <record id="rule_final_other_earnings" model="hr.salary.rule">
+            <field name="name">Other Earnings</field>
+            <field name="code">FINAL_OTHER_EARNINGS</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_other_earn"/>
+            <field name="sequence" eval="30"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">input</field>
+            <field name="amount_other_input_id" ref="input_type_final_other"/>
+        </record>
+
+        <record id="rule_final_gross" model="hr.salary.rule">
+            <field name="name">Total Entitlements Before Deduction</field>
+            <field name="code">FINAL_GROSS</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_net"/>
+            <field name="sequence" eval="40"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories['FINALGROSS']</field>
+        </record>
+
+        <record id="rule_final_sio" model="hr.salary.rule">
+            <field name="name">Social Insurance Organization (SIO) Deduction</field>
+            <field name="code">FINAL_SIO</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_sio"/>
+            <field name="sequence" eval="50"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">input</field>
+            <field name="amount_other_input_id" ref="input_type_final_sio"/>
+        </record>
+
+        <record id="rule_final_deduction" model="hr.salary.rule">
+            <field name="name">Other Deductions (Loan / Advance / Other)</field>
+            <field name="code">FINAL_DEDUCTION</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_other_ded"/>
+            <field name="sequence" eval="60"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">input</field>
+            <field name="amount_other_input_id" ref="input_type_final_deduction"/>
+        </record>
+
+        <record id="rule_final_dedtotal" model="hr.salary.rule">
+            <field name="name">Total Deductions</field>
+            <field name="code">FINAL_DEDTOTAL</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_net"/>
+            <field name="sequence" eval="70"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories['FINALDEDTOTAL']</field>
+        </record>
+
+        <record id="rule_final_net" model="hr.salary.rule">
+            <field name="name">Net Final Settlement Amount Payable</field>
+            <field name="code">FINAL_NET</field>
+            <field name="struct_id" ref="structure_final_settlement"/>
+            <field name="category_id" ref="rule_category_final_net"/>
+            <field name="sequence" eval="80"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories['FINALGROSS'] - categories['FINALDEDTOTAL']</field>
+            <field name="bold" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem
+            id="menu_hr_final_settlement"
+            name="Final Settlements"
+            parent="hr_work_entry_enterprise.menu_hr_payroll_root"
+            action="action_hr_final_settlement"
+            sequence="55"
+            groups="hr_final_settlement.group_hr_final_settlement_user"/>
+
+    </data>
+</odoo>
