@@ -2,12 +2,15 @@
 <odoo>
     <data>
 
+        <!-- Final Settlement lives only in the Employees app now - it's part of
+             the employee offboarding lifecycle, not a Payroll-only feature.
+             Placed right after Directory and before Reporting/Configuration. -->
         <menuitem
-            id="menu_hr_final_settlement"
+            id="menu_hr_final_settlement_employees"
             name="Final Settlements"
-            parent="hr_work_entry_enterprise.menu_hr_payroll_root"
+            parent="hr.menu_hr_root"
             action="action_hr_final_settlement"
-            sequence="55"
+            sequence="6"
             groups="hr_final_settlement.group_hr_final_settlement_user"/>
 
     </data>

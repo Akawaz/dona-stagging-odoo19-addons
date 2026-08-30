@@ -56,17 +56,22 @@ class HrFinalSettlementLine(models.Model):
     amount = fields.Monetary(
         string="Amount", compute='_compute_amount', store=True,
         help="Effective amount used in the settlement totals: the override "
-             "amount if manually overridden, otherwise the calculated amount.")
+             "amount if manually overridden, otherwise the calculated amount. "
+             "Deduction lines are always stored here as a negative number "
+             "(regardless of the sign entered in System Calculated Amount / "
+             "Override Amount) so totals are a straight sum, never a "
+             "subtraction - that's what makes double-counting impossible.")
 
     salary_rule_id = fields.Many2one('hr.salary.rule', string="Salary Rule")
     input_code = fields.Char(string="Payslip Input Code")
 
     notes = fields.Text()
 
-    @api.depends('is_manual_override', 'override_amount', 'calculated_amount')
+    @api.depends('is_manual_override', 'override_amount', 'calculated_amount', 'line_type')
     def _compute_amount(self):
         for line in self:
-            line.amount = line.override_amount if line.is_manual_override else line.calculated_amount
+            raw = line.override_amount if line.is_manual_override else line.calculated_amount
+            line.amount = -abs(raw) if line.line_type == 'deduction' else raw
 
     def write(self, vals):
         if 'override_amount' in vals or vals.get('is_manual_override'):

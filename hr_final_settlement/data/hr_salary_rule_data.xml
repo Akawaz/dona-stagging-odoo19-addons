@@ -87,7 +87,11 @@
             <field name="sequence" eval="80"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories['FINALGROSS'] - categories['FINALDEDTOTAL']</field>
+            <!-- FINALDEDTOTAL is already negative (deduction inputs are stored/passed
+                 as negative amounts - see hr.final.settlement.line._compute_amount),
+                 so this is addition, not subtraction: subtracting it would double-count
+                 the deduction (e.g. 1000 - (-100) = 1100, which is wrong). -->
+            <field name="amount_python_compute">result = categories['FINALGROSS'] + categories['FINALDEDTOTAL']</field>
             <field name="bold" eval="True"/>
         </record>
 
