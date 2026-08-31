@@ -19,7 +19,7 @@
 
                     <div class="header" style="padding: 0 24px; font-size: 9px; color: #666;">
                         <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;"/>
-                        <div style="text-align: center; margin-top: 2px;">
+                        <div style="text-align: center; margin-top: 1px;">
                             <span t-field="company.name"/>
                             <t t-if="company.fs_employer_cr_number"> | CR No. <span t-field="company.fs_employer_cr_number"/></t>
                             <t t-if="company.country_id"> | <span t-field="company.country_id.name"/></t>
