@@ -53,18 +53,24 @@ class HrDepartureWizard(models.TransientModel):
                 ) % exc.args[0])
             settlements |= settlement
 
-        if len(settlements) == 1:
+            if len(settlements) == 1:
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': _("Final Settlement"),
+                    'res_model': 'hr.final.settlement',
+                    'view_mode': 'form',
+                    'views': [[False, 'form']],
+                    'res_id': settlements.id,
+                }
+    
             return {
                 'type': 'ir.actions.act_window',
-                'name': _("Final Settlement"),
+                'name': _("Final Settlements"),
                 'res_model': 'hr.final.settlement',
-                'view_mode': 'form',
-                'res_id': settlements.id,
+                'view_mode': 'list,form',
+                'views': [
+                    [False, 'list'],
+                    [False, 'form'],
+                ],
+                'domain': [('id', 'in', settlements.ids)],
             }
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _("Final Settlements"),
-            'res_model': 'hr.final.settlement',
-            'view_mode': 'list,form',
-            'domain': [('id', 'in', settlements.ids)],
-        }
