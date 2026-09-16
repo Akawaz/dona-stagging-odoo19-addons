@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_branch_list" model="ir.ui.view">
+        <field name="name">pos.branch.list</field>
+        <field name="model">pos.branch</field>
+        <field name="arch" type="xml">
+            <list string="Branches">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="pos_config_id"/>
+                <field name="online_payment_method_id" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_pos_branch_form" model="ir.ui.view">
+        <field name="name">pos.branch.form</field>
+        <field name="model">pos.branch</field>
+        <field name="arch" type="xml">
+            <form string="Branch">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. DONAS WONDERS W.L.L-Muharraq"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identification">
+                            <field name="code" placeholder="e.g. MUHARRAQ"/>
+                            <field name="pos_key"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="POS Routing">
+                            <field name="company_id"/>
+                            <field name="pos_config_id"/>
+                            <field name="online_payment_method_id"/>
+                        </group>
+                    </group>
+                    <group string="Branch Details">
+                        <field name="website_id"/>
+                        <field name="address"/>
+                        <field name="phone"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pos_branch" model="ir.actions.act_window">
+        <field name="name">Branches</field>
+        <field name="res_model">pos.branch</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a branch and assign its Point of Sale
+            </p>
+            <p>
+                Website orders are routed to the POS of the branch the
+                customer selected on the website. No JavaScript change is
+                needed to reassign a branch's POS - just edit it here.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_pos_branch"
+        name="Branches"
+        action="action_pos_branch"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="5"/>
+
+</odoo>
